@@ -1,0 +1,12 @@
+.grid-container {
+    display: inline-grid;
+    grid-template-columns: 25rem 25rem 25rem 25rem;
+    
+}
+
+.grid-item img{
+    width: 30%;
+}
+
+
+
