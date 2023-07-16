@@ -1,11 +1,26 @@
 .grid-container {
     display: inline-grid;
     grid-template-columns: 25rem 25rem 25rem 25rem;
+    float: right;
     
 }
 
 .grid-item img{
-    width: 30%;
+    width: 60%;
+    margin: 1em;
+}
+
+
+.sidenav {
+    height: 100%; 
+    width: 10%; 
+    position: fixed; 
+
+    top: 0; 
+    left: 0;
+    background-color: #ffffff; 
+    padding-top: 20px;
+    border: 0.5em black solid;
 }
 
 
