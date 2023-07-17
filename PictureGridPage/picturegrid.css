@@ -5,6 +5,13 @@
     
 }
 
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("https://64.media.tumblr.com/656b1ae7d1d3f690a7efbab9cf3ab52b/tumblr_njwcnuSN4q1rby4vso1_540.gif");
+    background-size: 10%;
+}
+
+
+
 .grid-item img{
     width: 60%;
     margin: 1em;
