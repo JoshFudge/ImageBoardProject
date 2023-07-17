@@ -3,13 +3,28 @@
 const http = require('http');
 const fs = require('fs').promises;
 
-//TODO Get html/css/js files linked
+//TODO 
 const getFile = (res, filePath, contentType) => {
     res.writeHead(200, {'Content-Type': contentType});
     fs.readFile(filePath)
     .then(content => res.write(content))
     .then(_ => res.end());
 }
+
+
+const getTagSearch = () => {
+    //TODO Make this method
+}
+
+
+
+
+
+
+
+
+
+
 
 
 http.createServer( (req, resp) => {
