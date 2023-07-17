@@ -40,14 +40,6 @@ else if(path[1] === "post.html"){
 }else if(path[1] === "post.js"){
     getFile(resp, "PostsPage/"+ path[1], "text/javascript")
 }
-
-
-
-
-
-
-
-
 else {
     resp.writeHead(404, {'Content-Type': 'text/html'});
     resp.write(
