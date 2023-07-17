@@ -3,13 +3,57 @@
 const http = require('http');
 const fs = require('fs').promises;
 
-//TODO Get html/css/js files linked
+//TODO the API shit
 const getFile = (res, filePath, contentType) => {
     res.writeHead(200, {'Content-Type': contentType});
     fs.readFile(filePath)
     .then(content => res.write(content))
     .then(_ => res.end());
 }
+
+
+const getTagSearch = () => {
+    // return a list of all Image-IDs
+// who’s JSON files contain all
+// tags from the body not starting with “-” and contain none
+// of the tags starting with “-”.
+
+
+
+}
+
+const getImages = () => {
+    // return an image’s JSON object from its JSON file, using the
+// unique Image-ID to find the image.
+
+
+}
+
+const postImage = () => {
+//  Create a new image JSON file
+// for this Image-ID and make the
+// provided URL from the body a
+// field of this object.
+
+}
+
+const getComment = () => {
+//  Get the list of comments associated with this Image-ID
+}
+
+
+const postComment = () => {
+    // Add a new comment to the list
+    // of comments for an Image-ID.
+    // The contents of the comment
+    // will be in the body.
+
+
+
+}
+
+
+
 
 
 http.createServer( (req, resp) => {
