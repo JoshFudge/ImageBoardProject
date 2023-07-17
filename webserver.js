@@ -14,15 +14,27 @@ const getFile = (res, filePath, contentType) => {
 
 http.createServer( (req, resp) => {
 const path = req.url.split('/');
-
+console.log(path);
 if(path[1] === "" || path[1] === "homepage.html"){
-    getFile(res, "homepage.html", "text/html");
+    getFile(resp, "Homepage/homepage.html", "text/html");
+    console.log("HERE");
+} else if(path[1] === "homepage.css"){
+    getFile(resp, "homepage/"+ path[1], "text/css")
+}else if(path[1] === "homepage.js"){
+    getFile(resp, "homepage/"+ path[1], "text/javascript")
 }
 
-resp.writeHead(200, {'Content-Type': 'text/html'})
-resp.write(req.url);
 
 
 
-resp.end();
+
+
+
+else {
+    resp.writeHead(404, {'Content-Type': 'text/html'});
+    resp.write(
+        "<html><head></head><body><p>Oops! nooooo content here.</p></body><html/>"
+    );
+    resp.end();
+}
 }).listen(8080)
