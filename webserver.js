@@ -16,7 +16,7 @@ http.createServer( (req, resp) => {
 const path = req.url.split('/');
 console.log(path);
 if(path[1] === "" || path[1] === "homepage.html"){
-    getFile(resp, "Homepage/homepage.html", "text/html");
+    getFile(resp, "Homepage/" + path[1], "text/html");
     console.log("HERE");
 } else if(path[1] === "homepage.css"){
     getFile(resp, "homepage/"+ path[1], "text/css")
