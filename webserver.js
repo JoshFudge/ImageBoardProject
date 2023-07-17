@@ -1,9 +1,23 @@
 "use strict";
 
 const http = require('http');
+const fs = require('fs').promises;
+
+//TODO Get html/css/js files linked
+const getFile = (res, filePath, contentType) => {
+    res.writeHead(200, {'Content-Type': contentType});
+    fs.readFile(filePath)
+    .then(content => res.write(content))
+    .then(_ => res.end());
+}
+
 
 http.createServer( (req, resp) => {
+const path = req.url.split('/');
 
+if(path[1] === "" || path[1] === "homepage.html"){
+    getFile(res, "homepage.html", "text/html");
+}
 
 resp.writeHead(200, {'Content-Type': 'text/html'})
 resp.write(req.url);
