@@ -1,0 +1,30 @@
+/* SideBar Stuff */
+.sidenav {
+    height: 100%; 
+    width: 10%; 
+    position: fixed; 
+
+    top: 0; 
+    left: 0;
+    background-color: #ffffff; 
+    padding-top: 20px;
+    border: 0.4em black solid;
+}
+
+.sidenav #searchbar{
+    padding: auto;
+    width: 85%;
+}
+
+.tags{
+    margin-top: 80%;
+    border: 1px black solid;
+    border-top: 0.5em black solid;
+    height: 100%;
+}
+
+/* SideBar Stuff */
+
+#postandcomments {
+    float:right;
+}
