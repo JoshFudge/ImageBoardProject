@@ -1,3 +1,8 @@
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("https://64.media.tumblr.com/656b1ae7d1d3f690a7efbab9cf3ab52b/tumblr_njwcnuSN4q1rby4vso1_540.gif");
+}
+
 /* SideBar Stuff */
 .sidenav {
     background: rgb(238,230,219);
@@ -36,4 +41,50 @@
 
 #postandcomments {
     float:right;
+    text-align: center;
+}
+
+.postCommentDiv{
+    background-color: #ffffff;
+    text-align: left;
+    border: black 0.3em solid;
+}
+.postCommentDiv button{
+    width: 10%;
+    margin-bottom: 0.5em;
+}
+
+.postCommentDiv textarea {
+    width: 80%;
+    height: 100px;
+    max-width: 80%;
+    min-width: 80%;
+
+    min-height: 100px;
+    max-height: 100px;
+}
+.postCommentDiv * {
+    margin-left: 2em;
+    margin-top: 0.5em;
+}
+
+.CommentDiv {
+    text-align: left;
+    border: black 0.5em solid;
+    background: rgb(238,230,219);
+    background: linear-gradient(0deg, rgba(238,230,219,1) 3%, rgba(249,221,160,1) 93%, rgba(249,221,160,1) 100%);
+}
+
+.individualComment{
+    border: black 0.2em solid;
+    margin: 1em;
+}
+
+img{
+    width: 50%;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    -webkit-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    -moz-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
 }
