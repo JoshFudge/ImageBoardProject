@@ -22,9 +22,19 @@ const getTagSearch = () => {
 
 }
 
-const getImages = () => {
+const getImages = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
+fs.readFile("images/"+imageID+".json")
+.then(content => {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write(content);
+    res.end();
+}).catch( _ => {
+    res.writeHead(404, {'Content-Type': 'application/json'});
+    res.write('{"error": "No topic for given ID"}');
+    res.end();
+});
 
 
 }
@@ -37,17 +47,33 @@ const postImage = () => {
 
 }
 
-const getComment = () => {
+const getComment = (res,CommentID) => {
 //  Get the list of comments associated with this Image-ID
+    fs.readFile("images/comments/"+CommentID+".json")
+    .then(content => {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(content);
+        res.end();
+    }).catch( _ => {
+        res.writeHead(404, {'Content-Type': 'application/json'});
+        res.write('{"error": "No post for given ID"}');
+        res.end();
+    });
 }
 
 
-const makeComment = () => {
+const makeComment = (res,CommentID,contents) => {
     // Add a new comment to the list
     // of comments for an Image-ID.
     // The contents of the comment
     // will be in the body.
 
+
+    // fs.writeFile("images/comments/"+CommentID+".json",
+    
+    
+    
+    // )
 
 
 }
