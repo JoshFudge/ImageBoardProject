@@ -1,0 +1,6 @@
+Every image will go in here in the form of a JSON object/file
+
+each object has these properties/methods
+- Image-ID -> id for each image???
+- URL -> image URL
+- TAGS -> all tags associated with the image (ex.. banana,space..)
