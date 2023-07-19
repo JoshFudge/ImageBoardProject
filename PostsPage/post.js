@@ -8,6 +8,10 @@ const narrowSearch = () => {
     
 }
 
-const comment = () => {
+const makeComment = () => {
     
 }
+
+$(document).ready( () => {
+
+})

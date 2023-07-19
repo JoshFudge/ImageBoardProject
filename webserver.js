@@ -42,7 +42,7 @@ const getComment = () => {
 }
 
 
-const postComment = () => {
+const makeComment = () => {
     // Add a new comment to the list
     // of comments for an Image-ID.
     // The contents of the comment
