@@ -1,5 +1,18 @@
+
+
 #mainpage {
     text-align: center;
+}
+
+  
+#title{
+    color: aquamarine;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 500%;
+}
+
+#homepagebar{
+    width: 35%;
 }
 
 body{
