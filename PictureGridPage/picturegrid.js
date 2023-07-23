@@ -16,7 +16,7 @@ const narrowSearch = () => {
     
 }
 
-
+//TODO figure out how to get the image object onto the piture grid page
 
 const getImages = async (imageID) => {
     const image = await fetch("http://localhost:8080/images/"+imageID)
