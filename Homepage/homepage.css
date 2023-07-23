@@ -4,6 +4,10 @@
     text-align: center;
 }
 
+#error{
+    color: #ff0000;
+}
+
   
 #title{
     color: aquamarine;
