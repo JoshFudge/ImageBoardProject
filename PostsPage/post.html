@@ -10,14 +10,16 @@
         <link rel="stylesheet" href="posts.css">
     </head>
     <body>
+        <!-- SIDEBAR -->
         <div class="sidenav">
 
             
             <div class="topSidebarSection">
                 <h3>Search By Tag</h3>
-                <input type="text" id = "searchbar">
+                <input type="text" id = "NavbarSearchBar">
                 <br>
-                <button id= "searchbutton">Search</button>
+                <button id= "NavbarSearchButton">Search</button>
+                <p id="navbarSearchError"></p>
             </div>
 
             
@@ -31,17 +33,19 @@
 
             </div>
         </div>
+        <!-- SIDEBAR -->
+        
 
-          <div id = "postandcomments">
+        <div id = "postandcomments">
             <img id="photopost" src = "https://i.ytimg.com/vi/WEh0O6Q4-Cc/maxresdefault.jpg">]
             <br>
 
 
             <div class="postCommentDiv">
                 <h3>Post a comment!</h3>
-                <textarea></textarea>
+                <textarea id="commentArea"></textarea>
                 <br>
-                <button>post</button>
+                <button id="postComment">Post Comment</button> <span id="commentError"></span>
             </div>
 
 
@@ -64,14 +68,14 @@
                 </div>
 
             </div>
-          </div>
+        </div>
 
 
 
 
 
 
-          <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="post.js" async defer></script>
     </body>
 </html>
