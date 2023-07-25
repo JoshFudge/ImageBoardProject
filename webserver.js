@@ -1,6 +1,4 @@
 "use strict";
-
-
 const fs = require('fs').promises;
 const http = require('http');
 
