@@ -122,7 +122,7 @@ $(document).ready( () => {
             // Do the tag Search
             $("#navbarSearchError").text("")
             getTags();
-            window.location.href = "http://127.0.0.1:5500/PictureGridPage/picturegrid.html";
+            window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
         }
