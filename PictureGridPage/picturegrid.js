@@ -9,7 +9,7 @@ const valiateSideBarSearch = (userInput) => {
 
 //Should getTags take a list of tags from the search bar?
 const getTags = () => {
-//Maybe needs to have a for-loop in here somewhere? eg. for each tag in the list, it does the code displayed below?
+//Maybe needs to have a for-loop in here somewhere? eg. for each tag in the list, if it matches a tag on one or more of the json objects, display the image in the grid
     $(`<div class="grid-item">`+
     `<img id = "photo" src = ${url}>`+
 `</div>`)
