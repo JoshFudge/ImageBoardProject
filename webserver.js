@@ -1,7 +1,8 @@
 "use strict";
 
-const http = require('http');
+
 const fs = require('fs').promises;
+const http = require('http');
 
 //TODO the API shit
 const getFile = (res, filePath, contentType) => {

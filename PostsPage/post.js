@@ -1,8 +1,5 @@
 "use strict";
 
-const fs = require('fs').promises;
-const http = require('http');
-
 const getTags = () => {
 
 }
@@ -45,7 +42,7 @@ const makeComment = async (commentID,content) => {
 const getImage = async (imageID) => {
     const image = await fetch("http://localhost:8080/images/"+imageID);
     if(image.status > 299 || image.status < 200) {
-        throw Error("Invalid Topic ID")
+        throw Error("Invalid Image ID")
     }
     return image
 }
@@ -108,7 +105,7 @@ $(document).ready( () => {
     })
 
 
-
+    //TODO get comments working
 
 
 
@@ -120,7 +117,7 @@ $(document).ready( () => {
             if(validateComment(comment)){
                 // Do the posting
 
-                const imageID = null;// get the image id here
+                const imageID = 1;// get the image id here
                 const imagePromise = await getImage(imageID)
                 const image = await imagePromise.json();
 
@@ -130,13 +127,15 @@ $(document).ready( () => {
                 const lastCommentId = commentIDs[postIDs.length -1];
                 const newCommentId = imageID
                     .concat("-")
-                    .concat(Number(lastPostId.split('-')[1])+1);
+                    .concat(Number(lastCommentId.split('-')[1])+1);
 
 
                 // Make the new comment object
                 await makeComment(newCommentId,comment)
                 // Update the current image with the new comment?
                 await updateImageWithComment(newCommentId,imageID)
+
+                $("#commentArea").val("");
 
 
             } else{
