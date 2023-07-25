@@ -29,7 +29,7 @@ const narrowSearch = () => {
 const getImages = async (imageID) => {
     const image = await fetch("http://localhost:8080/images/"+imageID)
     if(image.status > 299 || topic.status < 200) {
-        throw Error("Invalid Topic ID")
+        throw Error("Invalid Image ID")
     }
     return image
 }
@@ -45,6 +45,9 @@ $(document).ready( () => {
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
         }
     })
+    
+
+    $("#")
 
 })
 
