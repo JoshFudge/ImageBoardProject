@@ -1,7 +1,8 @@
 "use strict";
 
-const http = require('http');
+
 const fs = require('fs').promises;
+const http = require('http');
 
 //TODO the API shit
 const getFile = (res, filePath, contentType) => {
@@ -62,20 +63,21 @@ const getComment = (res,CommentID) => {
 }
 
 
-const makeComment = (res,CommentID,contents) => {
-    // Add a new comment to the list
-    // of comments for an Image-ID.
-    // The contents of the comment
-    // will be in the body.
-
-
-    // fs.writeFile("images/comments/"+CommentID+".json",
-    
-    
-    
-    // )
-
-
+const makeComment = (res, commentID, contents) => {
+    fs.writeFile("images/comments/"+commentID+".json",
+    `{
+        "comment-id": "${commentID}",
+        "content": "${contents}"
+    }`
+    ).then( content => {
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.write("");
+            res.end();
+        }).catch( _ => {
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.write('{"error": "No post for given ID"}');
+            res.end();
+        });
 }
 
 
