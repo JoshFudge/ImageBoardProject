@@ -81,6 +81,10 @@ $(document).ready( () => {
         window.location.href = "http://localhost:8080/post.html";
     })
 
+    $("#uploadImageButton").click(() => {
+        window.location.href = "http://localhost:8080/postImage.html";
+    })
+
 })
 
 
