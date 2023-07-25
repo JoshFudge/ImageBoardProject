@@ -18,12 +18,14 @@ const getTags = () => {
     for (let i = 0; i < unwantedTags.length; i++){
         unwantedTags[i] = unwantedTags[i].substring(1);
     }
-    localStorage.setItem("list",tags);
+    localStorage.setItem("wantedlist",wantedTags);
+    localStorage.setItem("unwantedlist",unwantedTags);
     console.log(tags);
     console.log(wantedTags);
     console.log(unwantedTags);
 
 }
+
 
 
 
@@ -51,6 +53,8 @@ $(document).ready( () => {
         if(valiateSideBarSearch(tagSearch)){
             // Do the tag Search
             $("#navbarSearchError").text("")
+            getTags();
+            window.location.href = "http://127.0.0.1:5500/PictureGridPage/picturegrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
         }
@@ -66,6 +70,7 @@ $(document).ready( () => {
         }
         else{
             getTags();
+            window.location.href = "http://127.0.0.1:5500/PictureGridPage/picturegrid.html";
         }
     })
 })
