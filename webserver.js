@@ -1,30 +1,14 @@
 "use strict";
-
-
 const fs = require('fs').promises;
 const http = require('http');
 
-
+//TODO the API shit
 const getFile = (res, filePath, contentType) => {
     res.writeHead(200, {'Content-Type': contentType});
     fs.readFile(filePath)
     .then(content => res.write(content))
     .then(_ => res.end());
 }
-
-////////////// WE NEED:
-
-// 1) A post /search (Tags) ----------------------- All Pages
-
-// 2) A get /image/ImageID ------- PictureGrid, Post
-
-// 3) A post /image/ImageID --------- PostImage Page
-
-// 4) A get image/imageID/comment ------ Post Page
-
-// 5) A post image/imageId/comment ------ Post Page
-
-
 
 
 const getTagSearch = () => {
@@ -37,7 +21,6 @@ const getTagSearch = () => {
 
 }
 
-// Part 2
 const getImages = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
@@ -63,8 +46,6 @@ const postImage = () => {
 
 }
 
-
-/// Part
 const getComment = (res,CommentID) => {
 //  Get the list of comments associated with this Image-ID
     fs.readFile("images/comments/"+CommentID+".json")
@@ -78,7 +59,6 @@ const getComment = (res,CommentID) => {
         res.end();
     });
 }
-
 
 const makeComment = (res, commentID, contents) => {
     fs.writeFile("images/comments/"+commentID+".json",
@@ -96,6 +76,30 @@ const makeComment = (res, commentID, contents) => {
             res.end();
         });
 }
+
+
+// Method to make new imge JSON file
+const makeNewImage = (res, imageID,imageURL, imageTags) => {
+    fs.writeFile("images/comments/"+imageID+".json",
+    `{
+        "image-id": "${imageID}",
+        "URL": "${imageURL}",
+        "tags": "${imageTags}",
+        "comments": []
+    }`
+    ).then( content => {
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.write()
+            res.write("");
+            res.end();
+        }).catch( _ => {
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.write('{"error": "No image for given ID"}');
+            res.end();
+        });
+}
+
+
 
 
 
@@ -129,7 +133,6 @@ else if(path[1] === "post.html"){
 }else if(path[1] === "post.js"){
     getFile(resp, "PostsPage/"+ path[1], "text/javascript")
 }
-
 else if(path[1] === "postImage.html"){
     getFile(resp, "PostImagePage/"+ path[1], "text/html")
 }else if(path[1] === "postImage.css"){
@@ -137,6 +140,18 @@ else if(path[1] === "postImage.html"){
 }else if(path[1] === "postImage.js"){
     getFile(resp, "PostImagePage/"+ path[1], "text/javascript")
 }
+else if (path[1] === "image"){
+
+    if(req.method == "POST"){
+        // get the image info from the frontend post
+        //...
+        // makeNewImage(res,2,)
+    }
+
+}
+
+
+
 else {
     resp.writeHead(404, {'Content-Type': 'text/html'});
     resp.write(
