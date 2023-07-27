@@ -143,9 +143,16 @@ else if(path[1] === "postImage.html"){
 else if (path[1] === "image"){
 
     if(req.method == "POST"){
-        // get the image info from the frontend post
-        //...
-        // makeNewImage(res,2,)
+        let body ="";
+        req.on('data', (chunk) => {
+            body += chunk;
+        });
+        req.on('end',() => {
+            let bodyObject = JSON.parse(body)
+            let printablebodyObject = JSON.stringify(bodyObject)
+            console.log(printablebodyObject);
+            makeNewImage(resp,2,bodyObject['URL'],bodyObject['tags'])
+        });
     }
 
 }
