@@ -2,7 +2,7 @@
 const fs = require('fs').promises;
 const http = require('http');
 
-//TODO the API shit
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^ ANCILLARY METHODS
 const getFile = (res, filePath, contentType) => {
     res.writeHead(200, {'Content-Type': contentType});
     fs.readFile(filePath)
@@ -10,41 +10,35 @@ const getFile = (res, filePath, contentType) => {
     .then(_ => res.end());
 }
 
-
-const getTagSearch = () => {
-    // return a list of all Image-IDs
-// who’s JSON files contain all
-// tags from the body not starting with “-” and contain none
-// of the tags starting with “-”.
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV ANCILLARY METHODS
 
 
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
-}
-
-const getImage = (res, imageID) => {
-    // return an image’s JSON object from its JSON file, using the
-// unique Image-ID to find the image.
-fs.readFile("images/"+imageID+".json")
+const getTagSearch = async (res,) => {
+fs.readFile("allImages.json")
 .then(content => {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(content);
-    res.end();
-}).catch( _ => {
-    res.writeHead(404, {'Content-Type': 'application/json'});
-    res.write('{"error": "No topic for given ID"}');
-    res.end();
-});
+    let results = JSON.parse(content)
+    let imagesList = results.allImages;
 
+    // let x = getTagSearchFromPost()
 
-}
-
-const postImage = () => {
-//  Create a new image JSON file
-// for this Image-ID and make the
-// provided URL from the body a
-// field of this object.
+    for(let i = 0; i <= imagesList.length; i++){
+        //TODO get the tag search from the post
+        if (imagesList[i].tags){}
+    }
+    let stringResults = JSON.stringify(results.allImages[0])
+    console.log(stringResults)
+})
 
 }
+
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
+
+
+
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ COMMENT METHODS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 const getComments = (res,imageID) => {
 //  Get the list of comments associated with this Image-ID
@@ -79,8 +73,26 @@ const makeComment = (res, commentID, contents) => {
         });
 }
 
+//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV COMMENT METHODS VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
 
+
+////////////////////////////////// IMAGE METHODS
+
+const getImage = (res, imageID) => {
+    // return an image’s JSON object from its JSON file, using the
+// unique Image-ID to find the image.
+fs.readFile("images/"+imageID+".json")
+.then(content => {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write(content);
+    res.end();
+}).catch( _ => {
+    res.writeHead(404, {'Content-Type': 'application/json'});
+    res.write('{"error": "No topic for given ID"}');
+    res.end();
+});
+}
 
 // Method to make new imge JSON file
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
@@ -124,7 +136,7 @@ const getImageCount = () => {
         return imgTotal.allImages.length;
     })
 }
-
+////////////////////////////////// IMAGE METHODS
 
 
 
@@ -186,6 +198,8 @@ else if (path[1] === "image"){
         }
     }
 
+}else if (path[1] == "search"){
+    getTagSearch(resp)
 }
 
 

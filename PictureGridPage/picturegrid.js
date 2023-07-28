@@ -1,5 +1,5 @@
 "use strict";
-
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  TAG METHODS
 const getTags = () => {
     //Put every search query in one list
     const tags = $("#NavbarSearchBar").val().split(" ");
@@ -27,6 +27,67 @@ const getTags = () => {
 }
 
 
+const postTags = async(tags) => {
+    let postingURL = "/search";
+    let contents = JSON.stringify({
+        goodTags: tags[0],
+        badTags: tags[1]
+    })
+    try{
+        fetch(postingURL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: contents
+        }).then(res => {
+            if(!res.ok){
+                throw new Error('Network Died ' +res.status)
+            }
+        })
+    }catch(e){
+        console.log(e)
+    }
+}
+
+
+const getWantedTags = () => {
+    let gTags = localStorage.getItem("wantedlist");
+    let bTags = localStorage.getItem("unwantedlist");
+    let tagList = [gTags,bTags]
+    console.log(tagList)
+    return tagList
+}
+
+
+
+//Should getTags take a list of tags from the search bar?
+const displayTags = () => {
+    //Maybe needs to have a for-loop in here somewhere? eg. for each tag in the list, if it matches a tag on one or more of the json objects, display the image in the grid
+        $(`<div class="grid-item">`+
+        `<img id = "photo" src = ${url}>`+
+    `</div>`)
+        .appendTo('#grid-container');
+}
+
+
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////// ANCILLARY METHODS
+
 const valiateSideBarSearch = (userInput) => {
     let desiredtags = userInput.split(",")
     if(!userInput == "" && desiredtags.length != 0 ){
@@ -34,14 +95,15 @@ const valiateSideBarSearch = (userInput) => {
     }
 }
 
-//Should getTags take a list of tags from the search bar?
-const displayTags = () => {
-//Maybe needs to have a for-loop in here somewhere? eg. for each tag in the list, if it matches a tag on one or more of the json objects, display the image in the grid
-    $(`<div class="grid-item">`+
-    `<img id = "photo" src = ${url}>`+
-`</div>`)
-    .appendTo('#grid-container');
-}
+////////////////////////////////////// ANCILLARY METHODS
+
+
+
+
+
+
+
+
 
 const openPost = () => {
 
@@ -50,6 +112,12 @@ const openPost = () => {
 const narrowSearch = () => {
     
 }
+
+
+
+
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ IMAGE METHODS
+
 
 //TODO figure out how to get the image object onto the piture grid page
 
@@ -61,7 +129,18 @@ const getImages = async (imageID) => {
     return image
 }
 
+//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV IMAGE METHODS
+
+
+
 $(document).ready( () => {
+    let Tags = getWantedTags()
+    postTags(Tags)
+
+    // TODO get tag post from local storage, make post, fetch tags 
+
+
+
 
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()

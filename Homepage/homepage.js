@@ -23,7 +23,9 @@ const getTags = () => {
     console.log(tags);
     console.log(wantedTags);
     console.log(unwantedTags);
+    // let allTags = [wantedTags,unwantedTags]
 
+    // return allTags
 }
 
 
@@ -53,7 +55,10 @@ $(document).ready( () => {
         if(valiateSideBarSearch(tagSearch)){
             // Do the tag Search
             $("#navbarSearchError").text("")
-            getTags();
+            let userInputTags = getTags();
+
+
+
             window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
