@@ -15,20 +15,56 @@ const getFile = (res, filePath, contentType) => {
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
-const getTagSearch = async (res,) => {
+const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
 .then(content => {
     let results = JSON.parse(content)
     let imagesList = results.allImages;
 
-    // let x = getTagSearchFromPost()
+    let goodTs = tags[0].split(",")
+    let badTs = tags[1].split(",")
 
-    for(let i = 0; i <= imagesList.length; i++){
-        //TODO get the tag search from the post
-        if (imagesList[i].tags){}
+    console.log("Good Tags: "+ goodTs)
+    console.log("Bd Tags: "+ badTs)
+
+
+
+    let imagesThatPass = []
+    // for each item in all images list, if the image tag is in good tags and not in bad tags, add to Image-pass list
+
+
+//TODO THE LOGIC TO GET EACH IMAGE THAT PASSES
+
+    // For each image Object
+    for(let i = 0; i < imagesList.length; i++){
+        // get that objects tags
+        let stringTags =  JSON.stringify(imagesList[i].tags)
+        console.log("This images Tags: "+ stringTags)
+
+        // For each of those tags
+        // for(let j = 0; j < stringTags.length; j ++){
+            console.log("THIS TAG = "+ stringTags);
+            // if its in tge desired tags list and not in the bad tags list
+            if(goodTs.includes(stringTags) && !badTs.includes(stringTags)){
+                console.log("TRUE")
+                // add the image ID to the final list
+                imagesThatPass.push(imagesList[i].imageID)
+            }
+        // }
+
+
     }
-    let stringResults = JSON.stringify(results.allImages[0])
-    console.log(stringResults)
+    console.log("images That Pass: "+imagesThatPass)
+
+    let responseString = "";
+    for(let i = 0; i < imagesThatPass.length; i++){
+        responseString += (imagesThatPass[i] = ",")
+    }
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write(responseString)
+    res.end()
+    // let stringResults = JSON.stringify(results.allImages[0])
+    // console.log(stringResults)
 })
 
 }
@@ -146,7 +182,6 @@ console.log(path);
 // Sync up the homepage files
 if(path[1] === "" || path[1] === "homepage.html"){
     getFile(resp, "Homepage/" + path[1], "text/html");
-    console.log("HERE");
 } else if(path[1] === "homepage.css"){
     getFile(resp, "homepage/"+ path[1], "text/css")
 }else if(path[1] === "homepage.js"){
@@ -199,7 +234,21 @@ else if (path[1] === "image"){
     }
 
 }else if (path[1] == "search"){
-    getTagSearch(resp)
+    let body = "";
+    req.on('data', (chunk) => {
+        body += chunk;
+    });
+    req.on('end', async () => {
+        let bodyObject = JSON.parse(body)
+        let printablebodyObject = JSON.stringify(bodyObject)
+        console.log(printablebodyObject)
+        let good = bodyObject['goodTags'];
+        let bad = bodyObject['badTags'];
+        let allTs = [good,bad]
+        console.log(allTs)
+        getTagSearch(resp,allTs)
+    })
+    // getTagSearch(resp)
 }
 
 

@@ -20,12 +20,18 @@ const getTags = () => {
     }
     localStorage.setItem("wantedlist",wantedTags);
     localStorage.setItem("unwantedlist",unwantedTags);
-    console.log(tags);
-    console.log(wantedTags);
-    console.log(unwantedTags);
+    // console.log(tags);
+    // console.log(wantedTags);
+    // console.log(unwantedTags);
 
 }
-
+const getWantedTags = () => {
+    let gTags = localStorage.getItem("wantedlist");
+    let bTags = localStorage.getItem("unwantedlist");
+    let tagList = [gTags,bTags]
+    // console.log(tagList)
+    return tagList
+}
 
 const postTags = async(tags) => {
     let postingURL = "/search";
@@ -49,15 +55,6 @@ const postTags = async(tags) => {
     }catch(e){
         console.log(e)
     }
-}
-
-
-const getWantedTags = () => {
-    let gTags = localStorage.getItem("wantedlist");
-    let bTags = localStorage.getItem("unwantedlist");
-    let tagList = [gTags,bTags]
-    console.log(tagList)
-    return tagList
 }
 
 
