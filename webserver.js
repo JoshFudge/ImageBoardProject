@@ -15,6 +15,26 @@ const getFile = (res, filePath, contentType) => {
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
+const checkForMatch = (imgTags,TagsSearched) => {
+
+    console.log("imgTags: "+imgTags)
+    console.log("TagsSearched: "+TagsSearched)
+
+    let flag = false;
+    for(let i = 0; i < imgTags.length; i++){
+        console.log(TagsSearched[0]+" INCLUDES "+ imgTags)
+        if(TagsSearched[0].includes(imgTags) && !TagsSearched[1].includes(imgTags[i])){
+            console.log(TagsSearched[0]+" INCLUDES "+ imgTags)
+            flag = true
+        }
+    }
+    return flag
+}
+
+
+
+
+
 const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
 .then(content => {
@@ -31,41 +51,43 @@ fs.readFile("allImages.json")
 
     let imagesThatPass = []
     // for each item in all images list, if the image tag is in good tags and not in bad tags, add to Image-pass list
-
-
+    let responseString = "";
 //TODO THE LOGIC TO GET EACH IMAGE THAT PASSES
 
     // For each image Object
     for(let i = 0; i < imagesList.length; i++){
         // get that objects tags
         let stringTags =  JSON.stringify(imagesList[i].tags)
-        console.log("This images Tags: "+ stringTags)
+        // console.log("This images Tags: "+ stringTags)
 
-        // For each of those tags
-        // for(let j = 0; j < stringTags.length; j ++){
-            console.log("THIS TAG = "+ stringTags);
-            // if its in tge desired tags list and not in the bad tags list
-            if(goodTs.includes(stringTags) && !badTs.includes(stringTags)){
-                console.log("TRUE")
-                // add the image ID to the final list
-                imagesThatPass.push(imagesList[i].imageID)
+        if(checkForMatch(stringTags,tags) == true){
+            // console.log("MATCH")
+            imagesThatPass.push(imagesList[i].imageID)
+
+            for(let i = 0; i < imagesThatPass.length; i++){
+                responseString += (imagesThatPass[i] = ",")
             }
-        // }
-
+        }
 
     }
+
+
+    
     console.log("images That Pass: "+imagesThatPass)
 
-    let responseString = "";
-    for(let i = 0; i < imagesThatPass.length; i++){
-        responseString += (imagesThatPass[i] = ",")
-    }
+
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.write(responseString)
     res.end()
     // let stringResults = JSON.stringify(results.allImages[0])
     // console.log(stringResults)
 })
+
+
+
+
+
+
 
 }
 
@@ -137,7 +159,7 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
     `{
         "image-id": "${imageID}",
         "URL": "${imageURL}",
-        "tags": "${imageTags}",
+        "tags": "[${imageTags}]",
         "comments": []
     }`
     ).then( content => {
