@@ -80,7 +80,7 @@ const makeComment = (res, commentID, contents) => {
 
 // Method to make new imge JSON file
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
-    fs.writeFile("images/comments/"+imageID+".json",
+    fs.writeFile("images/"+imageID+".json",
     `{
         "image-id": "${imageID}",
         "URL": "${imageURL}",
@@ -89,7 +89,7 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
     }`
     ).then( content => {
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.write()
+            // res.write()
             res.write("");
             res.end();
         }).catch( _ => {
@@ -99,13 +99,40 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
         });
 }
 
+const addImageToImageStorage = async (img) => {
+    fs.readFile(`allImages.json`)
+    .then(content => {
+        const imgList = JSON.parse(content);
+        imgList.allImages.push(img);
+        return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
+    }
+    ).then(_ => {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        console.log("here1")
+        res.write('{"success": "Added image successfully"}');
+        console.log("here2")
+        res.end();
+    }
+    ).catch( _ => {
+        res.writeHead(404, {'Content-Type': 'application/json'});
+        res.write('{"error": "Failed to put image in storage"}');
+        res.end();
+    })
+}
+
+// Method to get total images to automate imageIDs
+const getImageCount = () => {
+    fs.readFile(`allImages.json`)
+    .then(content => {
+        const imgTotal = JSON.parse(content)
+        return imgTotal.allImages.length;
+    })
+}
 
 
 
 
-
-
-http.createServer( (req, resp) => {
+http.createServer(  (req, resp) => {
 const path = req.url.split('/');
 console.log(path);
 // Sync up the homepage files
@@ -147,11 +174,12 @@ else if (path[1] === "image"){
         req.on('data', (chunk) => {
             body += chunk;
         });
-        req.on('end',() => {
+        req.on('end',async () => {
             let bodyObject = JSON.parse(body)
             let printablebodyObject = JSON.stringify(bodyObject)
             console.log(printablebodyObject);
             makeNewImage(resp,2,bodyObject['URL'],bodyObject['tags'])
+            // addImageToImageStorage(bodyObject) -----> This breaks the server, idk why
         });
     }
 

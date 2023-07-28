@@ -61,7 +61,9 @@ $(document).ready( () => {
     })
 
 
-
+    $("#toPostPage").click( () => {
+        window.location.href = "http://localhost:8080/postImage.html";
+    })
 
 
     $("#homepagebutton").click(() => {
