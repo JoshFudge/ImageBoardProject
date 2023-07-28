@@ -77,7 +77,7 @@ $(document).ready( () => {
     
 
     //TODO Make this apply to every image, not just the first one
-    $("#photo").click(() => {
+    $(".grid-item").click(() => {
         window.location.href = "http://localhost:8080/post.html";
     })
 

@@ -66,6 +66,11 @@ body{
     text-align: center;
 }
 
+
+#NavbarSearchBar {
+    width: 85%;
+}
+
 /* SideBar Stuff */
 
 #uploadImageButton{

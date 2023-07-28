@@ -26,14 +26,9 @@ const getTags = () => {
 
 }
 
-const narrowSearch = () => {
-    
-}
-
-
 
 // Method to make a new comment object
-const makeComment = async (commentID,content) => {
+const makeComment = async (imgID,content) => {
     const bodyContents = JSON.stringify({
         "contents": content
     })
@@ -42,9 +37,9 @@ const makeComment = async (commentID,content) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }})
-    fetch("http://localhost:8080/comment/"+commentID, 
+    fetch("http://localhost:8080/image"+imgID+"/comment", 
         {   settings,
-            method: "post",
+            method: "POST",
             body: bodyContents
         }
     ).then( (response) => { 
@@ -70,8 +65,8 @@ const getImage = async (imageID) => {
 }
 
 // Method to get a comment
-const getComment = async (CommentID) => {
-    return await fetch("http://localhost:8080/comment/"+CommentID)
+const getComment = async (imgID) => {
+    return await fetch("http://localhost:8080/image/"+imgID+"/comment")
 }
 
 // Method to get all comments
@@ -88,13 +83,13 @@ const getAllComments = async(allCommentIDs) => {
 }
 
 // Method to update the image with all the comments including the newly posted one
-const updateImageWithComment = async (commentID, imageID) => {
-    const image = await fetch(`http://localhost:8080/addComment/${commentID}/toImage/${imageID}`);
-    if(image.status > 299 || image.status < 200) {
-        throw Error("Invalid Topic ID")
-    }
-    return image
-}
+// const updateImageWithComment = async (commentID, imageID) => {
+//     const image = await fetch(`http://localhost:8080/addComment/${commentID}/toImage/${imageID}`);
+//     if(image.status > 299 || image.status < 200) {
+//         throw Error("Invalid Topic ID")
+//     }
+//     return image
+// }
 
 // Method to check if the search bar search is a valid entry
 const valiateSideBarSearch = (userInput) => {
@@ -131,7 +126,7 @@ $(document).ready( () => {
 
     //TODO get comments working
 
-
+    getComment()
 
     $("#postComment").click( async () => {
         try{

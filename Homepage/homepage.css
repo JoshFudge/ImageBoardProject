@@ -40,6 +40,10 @@ body{
     border: 0.4em black solid;
 }
 
+#NavbarSearchBar {
+width: 85%;
+}
+
 .sidenav input{
     padding: auto;
     width: 85%;

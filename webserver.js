@@ -21,7 +21,7 @@ const getTagSearch = () => {
 
 }
 
-const getImages = (res, imageID) => {
+const getImage = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
 fs.readFile("images/"+imageID+".json")
@@ -46,10 +46,12 @@ const postImage = () => {
 
 }
 
-const getComment = (res,CommentID) => {
+const getComments = (res,imageID) => {
 //  Get the list of comments associated with this Image-ID
-    fs.readFile("images/comments/"+CommentID+".json")
+    fs.readFile("images/"+imageID+".json")
     .then(content => {
+        const imgData = JSON.parse(content)
+        console.log(imgData)
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.write(content);
         res.end();
@@ -78,8 +80,11 @@ const makeComment = (res, commentID, contents) => {
 }
 
 
+
+
 // Method to make new imge JSON file
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
+    imageID = getImageCount()
     fs.writeFile("images/"+imageID+".json",
     `{
         "image-id": "${imageID}",
@@ -106,18 +111,7 @@ const addImageToImageStorage = async (img) => {
         imgList.allImages.push(img);
         return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
     }
-    ).then(_ => {
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        console.log("here1")
-        res.write('{"success": "Added image successfully"}');
-        console.log("here2")
-        res.end();
-    }
-    ).catch( _ => {
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        res.write('{"error": "Failed to put image in storage"}');
-        res.end();
-    })
+    )
 }
 
 // Method to get total images to automate imageIDs
@@ -125,6 +119,8 @@ const getImageCount = () => {
     fs.readFile(`allImages.json`)
     .then(content => {
         const imgTotal = JSON.parse(content)
+        console.log(imgTotal)
+        console.log(imgTotal.allImages.length)
         return imgTotal.allImages.length;
     })
 }
@@ -175,12 +171,19 @@ else if (path[1] === "image"){
             body += chunk;
         });
         req.on('end',async () => {
+            let totalImages =  getImageCount()
             let bodyObject = JSON.parse(body)
             let printablebodyObject = JSON.stringify(bodyObject)
             console.log(printablebodyObject);
-            makeNewImage(resp,2,bodyObject['URL'],bodyObject['tags'])
-            // addImageToImageStorage(bodyObject) -----> This breaks the server, idk why
+            makeNewImage(resp,(parseInt(totalImages)+1),bodyObject['URL'],bodyObject['tags'])
+            // -----> This breaks the server, idk why
+            addImageToImageStorage(bodyObject) 
+
         });
+    }else if (req.method == "GET"){
+        if(path[3] === "comment"){
+            getComments(res,path[2])
+        }
     }
 
 }
