@@ -73,14 +73,10 @@ fs.readFile("allImages.json")
             }
         }
     }
-
     console.log("images That Pass: "+responseString)
-
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(responseString)
-    res.end()
-    // let stringResults = JSON.stringify(results.allImages[0])
-    // console.log(stringResults)
+    res.write(responseString);
+    res.end();
 })
 
 

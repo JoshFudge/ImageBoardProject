@@ -50,8 +50,6 @@ const postTags = async(tags) => {
         }).then(res => {
             if(!res.ok){
                 throw new Error('Network Died ' +res.status)
-            }else{
-                console.log("RES: "+ JSON.stringify(res))
             }
         })
     }catch(e){
@@ -134,8 +132,9 @@ const getImages = async (imageID) => {
 
 $(document).ready( async () => {
     let Tags = getWantedTags()
-    await postTags(Tags)
+    postTags(Tags)
 
+    //TODO get the response out of the post
 
     //do promise stuff...
 
