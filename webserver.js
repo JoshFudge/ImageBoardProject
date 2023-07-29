@@ -17,23 +17,23 @@ const getFile = (res, filePath, contentType) => {
 
 const checkForMatch = (imgTags,TagsSearched) => {
 
-    console.log("imgTags: "+imgTags)
-    console.log("TagsSearched: "+TagsSearched)
+    // console.log("imgTags: "+imgTags)
+    // console.log("TagsSearched: "+TagsSearched)
 
     let flag = false;
     for(let i = 0; i < imgTags.length; i++){
-        console.log(TagsSearched[0]+" INCLUDES "+ imgTags)
-        if(TagsSearched[0].includes(imgTags) && !TagsSearched[1].includes(imgTags[i])){
-            console.log(TagsSearched[0]+" INCLUDES "+ imgTags)
+        console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
+
+        console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
+        console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
+        if(imgTags.includes(TagsSearched[0]) && !imgTags.includes(TagsSearched[1])){
+
+            console.log("imgTags INCLUDES "+ TagsSearched[0])
             flag = true
         }
     }
     return flag
 }
-
-
-
-
 
 const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
@@ -41,12 +41,15 @@ fs.readFile("allImages.json")
     let results = JSON.parse(content)
     let imagesList = results.allImages;
 
-    let goodTs = tags[0].split(",")
-    let badTs = tags[1].split(",")
+    // let goodTs = tags[0].split(",")
+    // let badTs = tags[1].split(",")
 
-    console.log("Good Tags: "+ goodTs)
-    console.log("Bd Tags: "+ badTs)
+    // console.log("Good Tags: "+ goodTs)
+    // console.log("Bad Tags: "+ badTs)
 
+    // console.log("IMAGELIST = "+ JSON.stringify(imagesList))
+    // console.log("TOTAL IMAGES = "+ imagesList.length)
+    // console.log("FIRST IMAGE = "+ JSON.stringify(imagesList[0]))
 
 
     let imagesThatPass = []
@@ -57,24 +60,21 @@ fs.readFile("allImages.json")
     // For each image Object
     for(let i = 0; i < imagesList.length; i++){
         // get that objects tags
-        let stringTags =  JSON.stringify(imagesList[i].tags)
-        // console.log("This images Tags: "+ stringTags)
+        let stringTags =  imagesList[i].tags
+        console.log("This images Tags: "+ stringTags)
 
         if(checkForMatch(stringTags,tags) == true){
-            // console.log("MATCH")
+            console.log("MATCH")
+            console.log(imagesList[i].imageID)
             imagesThatPass.push(imagesList[i].imageID)
 
             for(let i = 0; i < imagesThatPass.length; i++){
-                responseString += (imagesThatPass[i] = ",")
+                responseString += (imagesThatPass[i] + ",")
             }
         }
-
     }
 
-
-    
-    console.log("images That Pass: "+imagesThatPass)
-
+    console.log("images That Pass: "+responseString)
 
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.write(responseString)
@@ -263,7 +263,7 @@ else if (path[1] === "image"){
     req.on('end', async () => {
         let bodyObject = JSON.parse(body)
         let printablebodyObject = JSON.stringify(bodyObject)
-        console.log(printablebodyObject)
+
         let good = bodyObject['goodTags'];
         let bad = bodyObject['badTags'];
         let allTs = [good,bad]

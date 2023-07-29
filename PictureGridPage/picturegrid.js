@@ -50,6 +50,8 @@ const postTags = async(tags) => {
         }).then(res => {
             if(!res.ok){
                 throw new Error('Network Died ' +res.status)
+            }else{
+                console.log("RES: "+ JSON.stringify(res))
             }
         })
     }catch(e){
@@ -130,14 +132,18 @@ const getImages = async (imageID) => {
 
 
 
-$(document).ready( () => {
+$(document).ready( async () => {
     let Tags = getWantedTags()
-    postTags(Tags)
-
-    // TODO get tag post from local storage, make post, fetch tags 
+    await postTags(Tags)
 
 
+    //do promise stuff...
 
+    // for(let i = 0; i < promise.length; i++){
+    //     $(`<div class="grid-item">`+
+    //     `<img id = "photo" src = ${promise["URL"]}>`+
+    // `</div>`).appendTo("#grid-container")
+    // }
 
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()
@@ -152,9 +158,9 @@ $(document).ready( () => {
     })
     
 
-    //TODO Make this apply to every image, not just the first one
     $(".grid-item").click(() => {
         window.location.href = "http://localhost:8080/post.html";
+        // Store the imageinfo somehwere so it can be transfered to the post page???
     })
 
     $("#uploadImageButton").click(() => {
