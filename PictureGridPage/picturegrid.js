@@ -40,18 +40,23 @@ const postTags = async(tags) => {
         badTags: tags[1]
     })
     try{
-        fetch(postingURL, {
+       const x = await fetch(postingURL, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: contents
-        }).then(res => {
-            if(!res.ok){
-                throw new Error('Network Died ' +res.status)
-            }
         })
+            if(!x.ok){
+                throw new Error('Network Died ' +res.status)
+            }else{
+                console.log('here0')
+                let xx = await JSON.stringify(x)
+                console.log(xx)
+                console.log('here1')
+                return xx
+            } 
     }catch(e){
         console.log(e)
     }
@@ -132,17 +137,23 @@ const getImages = async (imageID) => {
 
 $(document).ready( async () => {
     let Tags = getWantedTags()
-    postTags(Tags)
+    let x = await postTags(Tags)
+    // let imgIDlist = x.split(",")
+    // let imglist = []
+    // for(let i=0; i < imgIDlist.length; i++){
+    //     let CurrentImg = await getImages(imgIDlist[i])
+    //     imglist.push(CurrentImg);
+    // }
 
-    //TODO get the response out of the post
-
-    //do promise stuff...
-
-    // for(let i = 0; i < promise.length; i++){
+    // for(let i = 0; i < imglist.length; i++){
     //     $(`<div class="grid-item">`+
-    //     `<img id = "photo" src = ${promise["URL"]}>`+
+    //     `<img id = "photo" src = ${imglist[i]["URL"]}>`+
     // `</div>`).appendTo("#grid-container")
     // }
+
+
+
+
 
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()

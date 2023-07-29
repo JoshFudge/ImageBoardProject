@@ -16,10 +16,6 @@ const getFile = (res, filePath, contentType) => {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
 const checkForMatch = (imgTags,TagsSearched) => {
-
-    // console.log("imgTags: "+imgTags)
-    // console.log("TagsSearched: "+TagsSearched)
-
     let flag = false;
     for(let i = 0; i < imgTags.length; i++){
         console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
@@ -51,7 +47,6 @@ fs.readFile("allImages.json")
     // console.log("TOTAL IMAGES = "+ imagesList.length)
     // console.log("FIRST IMAGE = "+ JSON.stringify(imagesList[0]))
 
-
     let imagesThatPass = []
     // for each item in all images list, if the image tag is in good tags and not in bad tags, add to Image-pass list
     let responseString = "";
@@ -64,7 +59,6 @@ fs.readFile("allImages.json")
         console.log("This images Tags: "+ stringTags)
 
         if(checkForMatch(stringTags,tags) == true){
-            console.log("MATCH")
             console.log(imagesList[i].imageID)
             imagesThatPass.push(imagesList[i].imageID)
 
@@ -247,7 +241,7 @@ else if (path[1] === "image"){
         });
     }else if (req.method == "GET"){
         if(path[3] === "comment"){
-            getComments(res,path[2])
+            getComments(resp,path[2])
         }
     }
 
