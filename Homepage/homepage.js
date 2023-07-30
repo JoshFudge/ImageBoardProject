@@ -23,9 +23,6 @@ const getTags = () => {
     console.log(tags);
     console.log(wantedTags);
     console.log(unwantedTags);
-    // let allTags = [wantedTags,unwantedTags]
-
-    // return allTags
 }
 
 
@@ -56,8 +53,6 @@ $(document).ready( () => {
             // Do the tag Search
             $("#navbarSearchError").text("")
             let userInputTags = getTags();
-
-
 
             window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{

@@ -87,25 +87,48 @@ const valiateSideBarSearch = (userInput) => {
     }
 }
 
-////////////////////////////////////// ANCILLARY METHODS
+const getImagesAndDisplayPage = async () => {
+    let tags = getWantedTags()
+    let tagsPromise = await postTags(tags)
+    let tagsPromiseString = JSON.stringify(tagsPromise)
+    let imageIdsReturnedObject = JSON.parse(tagsPromiseString)
+    let imageIdsReturned = imageIdsReturnedObject.response
+    let imgIDlist = imageIdsReturned.split(",")
+    // console.log(imgIDlist)
 
+    let imglist = []
+    for(let i=0; i < imgIDlist.length; i++){
+        if(imgIDlist[i] != ""){
+        let currentImg = await getImages(imgIDlist[i])
+        let currentImgString = JSON.stringify(currentImg)
+        imglist.push(currentImgString);
+        // console.log("IMAGELIST: "+ imglist)
+        }
+    }
 
-
-
-
-
-
-
-
-const openPost = () => {
-
-}
-
-const narrowSearch = () => {
+    for(let i = 0; i < imglist.length; i++){
+        let currentImage = JSON.parse(imglist[i])
     
+        $(`<div class="grid-item">`+
+        `<img id = "photo" src = "${currentImage.URL}">`+
+        `</div>`).appendTo(".grid-container")
+    }
+
+    let imageTags = []
+    for(let i = 0; i< imglist.length; i++){
+        let currentImage = JSON.parse(imglist[i])
+        let currentTags =currentImage.tags
+        for (const tag of currentTags) {
+            if(!imageTags.includes(tag))
+            imageTags.push(tag)
+        }
+    }
+    for(let i = 0; i< imageTags.length; i++){
+        $(`<li> ${imageTags[i]}</li>`).appendTo("#imageTagsList")
+    }
 }
 
-
+////////////////////////////////////// ANCILLARY METHODS
 
 
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ IMAGE METHODS
@@ -114,7 +137,7 @@ const narrowSearch = () => {
 //TODO figure out how to get the image object onto the piture grid page
 
 const getImages = async (imageID) => {
-    const image = await fetch("http://localhost:8080/images/"+imageID)
+    const image = await fetch("http://localhost:8080/image/"+imageID)
     if(image.status > 299 || image.status < 200) {
         throw Error("Invalid Image ID")
     }
@@ -125,35 +148,9 @@ const getImages = async (imageID) => {
 
 
 
+
 $(document).ready( async () => {
-    let tags = getWantedTags()
-    let tagsPromise = await postTags(tags)
-    let tagsPromiseString = JSON.stringify(tagsPromise)
-    let imageIdsReturnedObject = JSON.parse(tagsPromiseString)
-    let imageIdsReturned = imageIdsReturnedObject.response
-    let imgIDlist = imageIdsReturned.split(",")
-    console.log(imgIDlist)
-
-    let imglist = []
-    for(let i=0; i < imgIDlist.length; i++){
-        if(imgIDlist[i] != ""){
-        let currentImg = await getImages(imgIDlist[i])
-        let currentImgString = JSON.stringify(currentImg)
-        imglist.push(currentImgString);
-        console.log("IMAGELIST: "+ imglist)
-        }
-    }
-
-    for(let i = 0; i < imglist.length; i++){
-        let currentImage = JSON.parse(imglist[i])
-    
-        $(`<div class="grid-item">`+
-        `<img id = "photo" src = "${currentImage.URL}">`+
-    `</div>`).appendTo(".grid-container")
-    }
-
-
-
+    getImagesAndDisplayPage()
 
 
     $("#NavbarSearchButton").click(() => {
@@ -169,7 +166,10 @@ $(document).ready( async () => {
     })
     
 
-    $(".grid-item").click(() => {
+    $("#photo").click(() => {
+        console.log("HERE!")
+
+
         window.location.href = "http://localhost:8080/post.html";
         // Store the imageinfo somehwere so it can be transfered to the post page???
     })

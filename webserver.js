@@ -18,13 +18,13 @@ const getFile = (res, filePath, contentType) => {
 const checkForMatch = (imgTags,TagsSearched) => {
     let flag = false;
     for(let i = 0; i < imgTags.length; i++){
-        console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
+        // console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
 
-        console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
-        console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
+        // console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
+        // console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
         if(imgTags.includes(TagsSearched[0]) && !imgTags.includes(TagsSearched[1])){
 
-            console.log("imgTags INCLUDES "+ TagsSearched[0])
+            // console.log("imgTags INCLUDES "+ TagsSearched[0])
             flag = true
         }
     }
@@ -37,20 +37,10 @@ fs.readFile("allImages.json")
     let results = JSON.parse(content)
     let imagesList = results.allImages;
 
-    // let goodTs = tags[0].split(",")
-    // let badTs = tags[1].split(",")
-
-    // console.log("Good Tags: "+ goodTs)
-    // console.log("Bad Tags: "+ badTs)
-
-    // console.log("IMAGELIST = "+ JSON.stringify(imagesList))
-    // console.log("TOTAL IMAGES = "+ imagesList.length)
-    // console.log("FIRST IMAGE = "+ JSON.stringify(imagesList[0]))
-
     let imagesThatPass = []
-    // for each item in all images list, if the image tag is in good tags and not in bad tags, add to Image-pass list
+
     let responseString = "";
-//TODO THE LOGIC TO GET EACH IMAGE THAT PASSES
+
 
     // For each image Object
     for(let i = 0; i < imagesList.length; i++){
@@ -58,7 +48,7 @@ fs.readFile("allImages.json")
         let stringTags =  imagesList[i].tags
         console.log("This images Tags: "+ stringTags)
 
-        if(checkForMatch(stringTags,tags) == true){
+        if(checkForMatch(stringTags,tags)){
             console.log(imagesList[i].imageID)
             imagesThatPass.push(imagesList[i].imageID)
 
@@ -130,14 +120,10 @@ const makeComment = (res, commentID, contents) => {
 const getImage = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
-console.log("HERE0")
 fs.readFile("images/"+imageID+".json")
 .then(content => {
-    console.log("HERE1")
     res.writeHead(200, {'Content-Type': 'application/json'});
-    console.log("HERE2")
     res.write(content);
-    console.log("HERE3")
     res.end();
 }).catch( _ => {
     res.writeHead(404, {'Content-Type': 'application/json'});
@@ -158,7 +144,6 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
     }`
     ).then( content => {
             res.writeHead(200, {'Content-Type': 'application/json'});
-            // res.write()
             res.write("");
             res.end();
         }).catch( _ => {
@@ -179,12 +164,12 @@ const addImageToImageStorage = async (img) => {
 }
 
 // Method to get total images to automate imageIDs
-const getImageCount = () => {
-    fs.readFile(`allImages.json`)
+const getImageCount = async() => {
+    await fs.readFile(`allImages.json`)
     .then(content => {
         const imgTotal = JSON.parse(content)
-        console.log(imgTotal)
-        console.log(imgTotal.allImages.length)
+        // console.log(imgTotal)
+        console.log("here: "+imgTotal.allImages.length)
         return imgTotal.allImages.length;
     })
 }
@@ -226,7 +211,7 @@ else if(path[1] === "postImage.html"){
 }else if(path[1] === "postImage.js"){
     getFile(resp, "PostImagePage/"+ path[1], "text/javascript")
 }
-else if (path[1] === "images"){
+else if (path[1] === "image"){
 
     if(req.method == "POST"){
         let body ="";
@@ -234,17 +219,19 @@ else if (path[1] === "images"){
             body += chunk;
         });
         req.on('end',async () => {
-            let totalImages =  getImageCount()
-            let bodyObject = JSON.parse(body)
-            let printablebodyObject = JSON.stringify(bodyObject)
-            console.log(printablebodyObject);
-            makeNewImage(resp,(parseInt(totalImages)+1),bodyObject['URL'],bodyObject['tags'])
-            // -----> This breaks the server, idk why
-            addImageToImageStorage(bodyObject) 
+            //TODO make the getImageCOunt method return a number not undefined
+            let totalImages =  await getImageCount()
+            console.log("TOTAL: "+ totalImages)
+            // let bodyObject = JSON.parse(body)
+            // let printablebodyObject = JSON.stringify(bodyObject)
+            // console.log(printablebodyObject);
+            // makeNewImage(resp,(totalImages+1),bodyObject['URL'],bodyObject['tags'])
+            // // -----> This breaks the server, idk why
+            // addImageToImageStorage(bodyObject) 
 
         });
     }else if (req.method == "GET"){
-        if(path[1]== "images"){
+        if(path[1]== "image"){
             getImage(resp,path[2])
         }
         if(path[3] === "comment"){

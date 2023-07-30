@@ -39,7 +39,7 @@ $("#uploadImageButton").click( async () => {
         let imgURL = $("#picurl").val();
         let tagInput = $("#pictags").val();
         let imageTags = tagInput.split(" ");
-        postImage(2,imgURL,imageTags)
+        postImage(77777,imgURL,imageTags)
         $("#pictags").val("");
         $("#picurl").val("");
     }catch (e){
