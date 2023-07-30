@@ -69,7 +69,7 @@ fs.readFile("allImages.json")
     }
     console.log("images That Pass: "+responseString)
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(responseString);
+    res.write('{"response":"'+responseString+`"}`);
     res.end();
 })
 
@@ -130,10 +130,14 @@ const makeComment = (res, commentID, contents) => {
 const getImage = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
+console.log("HERE0")
 fs.readFile("images/"+imageID+".json")
 .then(content => {
+    console.log("HERE1")
     res.writeHead(200, {'Content-Type': 'application/json'});
+    console.log("HERE2")
     res.write(content);
+    console.log("HERE3")
     res.end();
 }).catch( _ => {
     res.writeHead(404, {'Content-Type': 'application/json'});
@@ -222,7 +226,7 @@ else if(path[1] === "postImage.html"){
 }else if(path[1] === "postImage.js"){
     getFile(resp, "PostImagePage/"+ path[1], "text/javascript")
 }
-else if (path[1] === "image"){
+else if (path[1] === "images"){
 
     if(req.method == "POST"){
         let body ="";
@@ -240,6 +244,9 @@ else if (path[1] === "image"){
 
         });
     }else if (req.method == "GET"){
+        if(path[1]== "images"){
+            getImage(resp,path[2])
+        }
         if(path[3] === "comment"){
             getComments(resp,path[2])
         }

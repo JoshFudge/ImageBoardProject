@@ -1,4 +1,6 @@
 "use strict";
+
+
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  TAG METHODS
 const getTags = () => {
     //Put every search query in one list
@@ -50,13 +52,8 @@ const postTags = async(tags) => {
         })
             if(!x.ok){
                 throw new Error('Network Died ' +res.status)
-            }else{
-                console.log('here0')
-                let xx = await JSON.stringify(x)
-                console.log(xx)
-                console.log('here1')
-                return xx
-            } 
+            }
+            return await x.json()
     }catch(e){
         console.log(e)
     }
@@ -65,13 +62,6 @@ const postTags = async(tags) => {
 
 
 //Should getTags take a list of tags from the search bar?
-const displayTags = () => {
-    //Maybe needs to have a for-loop in here somewhere? eg. for each tag in the list, if it matches a tag on one or more of the json objects, display the image in the grid
-        $(`<div class="grid-item">`+
-        `<img id = "photo" src = ${url}>`+
-    `</div>`)
-        .appendTo('#grid-container');
-}
 
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
@@ -125,10 +115,10 @@ const narrowSearch = () => {
 
 const getImages = async (imageID) => {
     const image = await fetch("http://localhost:8080/images/"+imageID)
-    if(image.status > 299 || topic.status < 200) {
+    if(image.status > 299 || image.status < 200) {
         throw Error("Invalid Image ID")
     }
-    return image
+    return await image.json()
 }
 
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV IMAGE METHODS
@@ -136,20 +126,31 @@ const getImages = async (imageID) => {
 
 
 $(document).ready( async () => {
-    let Tags = getWantedTags()
-    let x = await postTags(Tags)
-    // let imgIDlist = x.split(",")
-    // let imglist = []
-    // for(let i=0; i < imgIDlist.length; i++){
-    //     let CurrentImg = await getImages(imgIDlist[i])
-    //     imglist.push(CurrentImg);
-    // }
+    let tags = getWantedTags()
+    let tagsPromise = await postTags(tags)
+    let tagsPromiseString = JSON.stringify(tagsPromise)
+    let imageIdsReturnedObject = JSON.parse(tagsPromiseString)
+    let imageIdsReturned = imageIdsReturnedObject.response
+    let imgIDlist = imageIdsReturned.split(",")
+    console.log(imgIDlist)
 
-    // for(let i = 0; i < imglist.length; i++){
-    //     $(`<div class="grid-item">`+
-    //     `<img id = "photo" src = ${imglist[i]["URL"]}>`+
-    // `</div>`).appendTo("#grid-container")
-    // }
+    let imglist = []
+    for(let i=0; i < imgIDlist.length; i++){
+        if(imgIDlist[i] != ""){
+        let currentImg = await getImages(imgIDlist[i])
+        let currentImgString = JSON.stringify(currentImg)
+        imglist.push(currentImgString);
+        console.log("IMAGELIST: "+ imglist)
+        }
+    }
+
+    for(let i = 0; i < imglist.length; i++){
+        let currentImage = JSON.parse(imglist[i])
+    
+        $(`<div class="grid-item">`+
+        `<img id = "photo" src = "${currentImage.URL}">`+
+    `</div>`).appendTo(".grid-container")
+    }
 
 
 
