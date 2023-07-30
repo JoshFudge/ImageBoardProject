@@ -28,32 +28,32 @@ const getTags = () => {
 
 
 // Method to make a new comment object
-// const makeComment = async (imgID,content) => {
-//     const bodyContents = JSON.stringify({
-//         "contents": content
-//     })
-//     const settings = JSON.stringify({
-//         headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json'
-//     }})
-//     fetch("http://localhost:8080/image"+imgID+"/comment", 
-//         {   settings,
-//             method: "POST",
-//             body: bodyContents
-//         }
-//     ).then( (response) => { 
-//         if(response.status < 200 || response.status > 299){
-//             throw Error(e);
-//         }
-//         $(
-//             `<h3> User: Josh<h3>`+
-//             `<p>${content}<p>`
-//         )
-//         .appendTo('#CommentDiv');
+const makeComment = async (imgID,content) => {
+    const bodyContents = JSON.stringify({
+        "contents": content
+    })
+    const settings = JSON.stringify({
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    }})
+    fetch("http://localhost:8080/image"+imgID+"/comment", 
+        {   settings,
+            method: "POST",
+            body: bodyContents
+        }
+    ).then( (response) => { 
+        if(response.status < 200 || response.status > 299){
+            throw Error(e);
+        }
+        $(
+            `<h3> User: Josh<h3>`+
+            `<p>${content}<p>`
+        )
+        .appendTo('#CommentDiv');
 
-//     });
-// }
+    });
+}
 
 // Method to get an image
 const getImage = async (imageID) => {
@@ -165,23 +165,23 @@ $(document).ready( () => {
             if(validateComment(comment)){
                 // Do the posting
 
-                const imageID = 1;// get the image id here
-                const imagePromise = await getImage(imageID)
-                const image = await imagePromise.json();
+                // const imageID = 1;// get the image id here
+                // const imagePromise = await getImage(imageID)
+                // const image = await imagePromise.json();
 
-                const commentIDs = image.comments;
-                const comments = await getAllComments(commentIDs)
+                // const commentIDs = image.comments;
+                // const comments = await getAllComments(commentIDs)
 
-                const lastCommentId = commentIDs[postIDs.length -1];
-                const newCommentId = imageID
-                    .concat("-")
-                    .concat(Number(lastCommentId.split('-')[1])+1);
+                // const lastCommentId = commentIDs[postIDs.length -1];
+                // const newCommentId = imageID
+                //     .concat("-")
+                //     .concat(Number(lastCommentId.split('-')[1])+1);
 
 
-                // Make the new comment object
-                await makeComment(newCommentId,comment)
-                // Update the current image with the new comment?
-                await updateImageWithComment(newCommentId,imageID)
+                // // Make the new comment object
+                // await makeComment(newCommentId,comment)
+                // // Update the current image with the new comment?
+                // await updateImageWithComment(newCommentId,imageID)
 
                 $("#commentArea").val("");
 
