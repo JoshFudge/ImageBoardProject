@@ -52,10 +52,11 @@ fs.readFile("allImages.json")
             console.log(imagesList[i].imageID)
             imagesThatPass.push(imagesList[i].imageID)
 
-            for(let i = 0; i < imagesThatPass.length; i++){
-                responseString += (imagesThatPass[i] + ",")
-            }
         }
+
+    }
+    for(let i = 0; i < imagesThatPass.length; i++){
+        responseString += (imagesThatPass[i] + ",")
     }
     console.log("images That Pass: "+responseString)
     res.writeHead(200, {'Content-Type': 'application/json'});

@@ -44,14 +44,16 @@ body{
 /* SideBar Stuff */
 
 #postandcomments {
-    float:right;
+    /* float:right; */
     text-align: center;
 }
 
 .postCommentDiv{
-    background-color: #ffffff;
+    background: rgb(238,230,219);
+    background: linear-gradient(0deg, rgba(238,230,219,1) 3%, rgba(249,221,160,1) 93%, rgba(249,221,160,1) 100%);
     text-align: left;
     border: black 0.3em solid;
+    margin-left: 15rem;
 }
 .postCommentDiv button{
     width: 10%;
@@ -68,11 +70,13 @@ body{
     max-height: 100px;
 }
 .postCommentDiv * {
+
     margin-left: 2em;
     margin-top: 0.5em;
 }
 
 .CommentDiv {
+    margin-left: 15rem;
     text-align: left;
     border: black 0.5em solid;
     background: rgb(238,230,219);
@@ -85,7 +89,7 @@ body{
 }
 
 img{
-    width: 50%;
+    width: 50rem;
     margin-top: 5em;
     margin-bottom: 5em;
     box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);

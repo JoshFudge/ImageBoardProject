@@ -18,6 +18,7 @@ body{
     box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
     -webkit-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
     -moz-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    border: 0.5em black solid;
 }
 
 .gridHeader {
