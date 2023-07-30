@@ -28,36 +28,36 @@ const getTags = () => {
 
 
 // Method to make a new comment object
-const makeComment = async (imgID,content) => {
-    const bodyContents = JSON.stringify({
-        "contents": content
-    })
-    const settings = JSON.stringify({
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }})
-    fetch("http://localhost:8080/image"+imgID+"/comment", 
-        {   settings,
-            method: "POST",
-            body: bodyContents
-        }
-    ).then( (response) => { 
-        if(response.status < 200 || response.status > 299){
-            throw Error(e);
-        }
-        $(
-            `<h3> User: Josh<h3>`+
-            `<p>${content}<p>`
-        )
-        .appendTo('#CommentDiv');
+// const makeComment = async (imgID,content) => {
+//     const bodyContents = JSON.stringify({
+//         "contents": content
+//     })
+//     const settings = JSON.stringify({
+//         headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json'
+//     }})
+//     fetch("http://localhost:8080/image"+imgID+"/comment", 
+//         {   settings,
+//             method: "POST",
+//             body: bodyContents
+//         }
+//     ).then( (response) => { 
+//         if(response.status < 200 || response.status > 299){
+//             throw Error(e);
+//         }
+//         $(
+//             `<h3> User: Josh<h3>`+
+//             `<p>${content}<p>`
+//         )
+//         .appendTo('#CommentDiv');
 
-    });
-}
+//     });
+// }
 
 // Method to get an image
 const getImage = async (imageID) => {
-    const image = await fetch("http://localhost:8080/images/"+imageID);
+    const image = await fetch("http://localhost:8080/image/"+imageID);
     if(image.status > 299 || image.status < 200) {
         throw Error("Invalid Image ID")
     }
@@ -107,9 +107,38 @@ const validateComment = (UserComment) => {
 }
 
 
+const displayPage = async () => {
+    let selected = localStorage.getItem("imageSelected")
+    console.log(selected)
+
+    let imagePromise = await getImage(selected)
+    let imageString = await imagePromise.json()
+    console.log(imageString["URL"])
+    $(`<img id = photopost src = ${imageString["URL"]}>`).appendTo("#test")
+
+    let imageTags = []
+
+    for(let i = 0; i< imageString["tags"].length; i++){
+        let currentTags = imageString["tags"]
+        for (const tag of currentTags) {
+            if(!imageTags.includes(tag)) {
+                imageTags.push(tag)
+            }
+
+        }
+    }
+    for(let i = 0; i< imageTags.length; i++){
+        $(`<li> ${imageTags[i]}</li>`).appendTo("#imageTagsList")
+    }
+
+
+
+
+}
 
 
 $(document).ready( () => {
+    displayPage()
 
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()
@@ -126,7 +155,7 @@ $(document).ready( () => {
 
     //TODO get comments working
 
-    getComment()
+    // getComment()
 
     $("#postComment").click( async () => {
         try{

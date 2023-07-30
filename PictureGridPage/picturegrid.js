@@ -22,9 +22,7 @@ const getTags = () => {
     }
     localStorage.setItem("wantedlist",wantedTags);
     localStorage.setItem("unwantedlist",unwantedTags);
-    // console.log(tags);
-    // console.log(wantedTags);
-    // console.log(unwantedTags);
+    window.location.href = "http://localhost:8080/pictureGrid.html";
 
 }
 const getWantedTags = () => {
@@ -110,7 +108,7 @@ const getImagesAndDisplayPage = async () => {
         let currentImage = JSON.parse(imglist[i])
     
         $(`<div class="grid-item">`+
-        `<img id = "photo" src = "${currentImage.URL}">`+
+        `<img id = "${currentImage.imageID}" src = "${currentImage.URL}">`+
         `</div>`).appendTo(".grid-container")
     }
 
@@ -144,6 +142,11 @@ const getImages = async (imageID) => {
     return await image.json()
 }
 
+const storeImageID = (imageID) => {
+
+    localStorage.setItem("imageSelected",imageID)
+}
+
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV IMAGE METHODS
 
 
@@ -159,19 +162,23 @@ $(document).ready( async () => {
             // Do the tag Search
             $("#navbarSearchError").text("")
             getTags();
-            window.location.href = "http://localhost:8080/pictureGrid.html";
+            // window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
         }
     })
     
 
-    $("#photo").click(() => {
-        console.log("HERE!")
+    $(".grid-container").click((evt) => {
 
-
+        let imgSelected = evt.target
+        console.log(imgSelected)
+        storeImageID(imgSelected["id"])
+    
         window.location.href = "http://localhost:8080/post.html";
-        // Store the imageinfo somehwere so it can be transfered to the post page???
+        
+
+
     })
 
     $("#uploadImageButton").click(() => {
