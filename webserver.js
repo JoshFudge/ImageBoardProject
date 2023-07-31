@@ -136,11 +136,20 @@ fs.readFile("images/"+imageID+".json")
 
 // Method to make new imge JSON file
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
+    let tagString =  ""
+    for(let i=0; i< imageTags.length; i++){
+        if(imageTags.indexOf(imageTags[i]) == imageTags.length-1){
+            tagString += '"'+imageTags[i]+'"'
+        } else{
+            tagString += '"'+imageTags[i]+'"' + ","  
+        }
+
+    }
     fs.writeFile("images/"+imageID+".json",
     `{
-        "image-id": "${imageID}",
+        "imageID": "${imageID}",
         "URL": "${imageURL}",
-        "tags": ["${imageTags}"],
+        "tags": [${tagString}],
         "comments": []
     }`
     ).then( content => {
