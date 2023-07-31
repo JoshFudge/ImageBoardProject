@@ -255,7 +255,6 @@ else if (path[1] === "image"){
         console.log(allTs)
         getTagSearch(resp,allTs)
     })
-    // getTagSearch(resp)
 }
 
 

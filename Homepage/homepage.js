@@ -1,8 +1,10 @@
 "use strict";
 
-const getTags = () => {
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  TAG METHODS
+const getTags = (tags) => {
     //Put every search query in one list
-    const tags = $("#homepagebar").val().split(" ");
+    tags = tags.split(" ");
     //Split list into two lists that separate wanted queries from unwanted queries (marked with -)
     const wantedTags = [];
     const unwantedTags = [];
@@ -24,11 +26,7 @@ const getTags = () => {
     console.log(wantedTags);
     console.log(unwantedTags);
 }
-
-
-
-
-
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
 
 const valiateSideBarSearch = (userInput) => {
     let desiredtags = userInput.split(" ")
@@ -44,6 +42,10 @@ const validateComment = (UserComment) => {
     }
 }
 
+
+
+
+
 $(document).ready( () => {
 
     // Getting the tags frm the Navbar Search and doing proper validation
@@ -51,9 +53,8 @@ $(document).ready( () => {
         let tagSearch = $("#NavbarSearchBar").val()
         if(valiateSideBarSearch(tagSearch)){
             // Do the tag Search
+            getTags(tagSearch);
             $("#navbarSearchError").text("")
-            let userInputTags = getTags();
-
             window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
@@ -67,11 +68,12 @@ $(document).ready( () => {
 
 
     $("#homepagebutton").click(() => {
-        if ($("#homepagebar").val() == ""){
+        let tagInput = $("#homepagebar").val()
+        if (tagInput == ""){
             $("#error").text("Please enter something"); 
         }
         else{
-            getTags();
+            getTags(tagInput);
             window.location.href = "http://localhost:8080/pictureGrid.html";
         }
     })

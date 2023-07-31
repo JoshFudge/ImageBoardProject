@@ -58,10 +58,6 @@ const postTags = async(tags) => {
 }
 
 
-
-//Should getTags take a list of tags from the search bar?
-
-
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
 
 
@@ -150,8 +146,6 @@ const storeImageID = (imageID) => {
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV IMAGE METHODS
 
 
-
-
 $(document).ready( async () => {
     getImagesAndDisplayPage()
 
@@ -177,8 +171,6 @@ $(document).ready( async () => {
     
         window.location.href = "http://localhost:8080/post.html";
         
-
-
     })
 
     $("#uploadImageButton").click(() => {
