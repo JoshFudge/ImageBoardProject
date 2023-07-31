@@ -21,7 +21,9 @@ const getTags = () => {
         unwantedTags[i] = unwantedTags[i].substring(1);
     }
     localStorage.setItem("wantedlist",wantedTags);
+    console.log(wantedTags);
     localStorage.setItem("unwantedlist",unwantedTags);
+    console.log(unwantedTags);
     window.location.href = "http://localhost:8080/pictureGrid.html";
 
 }
@@ -88,7 +90,7 @@ const getImagesAndDisplayPage = async () => {
     let imageIdsReturnedObject = JSON.parse(tagsPromiseString)
     let imageIdsReturned = imageIdsReturnedObject.response
     let imgIDlist = imageIdsReturned.split(",")
-    // console.log(imgIDlist)
+    console.log(imgIDlist)
 
     let imglist = []
     for(let i=0; i < imgIDlist.length; i++){
@@ -96,7 +98,7 @@ const getImagesAndDisplayPage = async () => {
         let currentImg = await getImages(imgIDlist[i])
         let currentImgString = JSON.stringify(currentImg)
         imglist.push(currentImgString);
-        // console.log("IMAGELIST: "+ imglist)
+        console.log("IMAGELIST: "+ imglist)
         }
     }
 
