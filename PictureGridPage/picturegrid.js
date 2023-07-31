@@ -169,7 +169,7 @@ $(document).ready( async () => {
         console.log(imgSelected)
         storeImageID(imgSelected["id"])
     
-        window.location.href = "http://localhost:8080/post.html";
+        // window.location.href = "http://localhost:8080/post.html";
         
     })
 

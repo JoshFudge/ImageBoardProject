@@ -136,12 +136,11 @@ fs.readFile("images/"+imageID+".json")
 
 // Method to make new imge JSON file
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
-    imageID = getImageCount()
     fs.writeFile("images/"+imageID+".json",
     `{
         "image-id": "${imageID}",
         "URL": "${imageURL}",
-        "tags": "[${imageTags}]",
+        "tags": ["${imageTags}"],
         "comments": []
     }`
     ).then( content => {
@@ -167,13 +166,13 @@ const addImageToImageStorage = async (img) => {
 
 // Method to get total images to automate imageIDs
 const getImageCount = async() => {
-    await fs.readFile(`allImages.json`)
+    return fs.readFile(`allImages.json`)
     .then(content => {
         const imgTotal = JSON.parse(content)
         // console.log(imgTotal)
         console.log("here: "+imgTotal.allImages.length)
         let total = imgTotal.allImages.length
-        
+        console.log(total);
         return total;
     })
 }
@@ -226,12 +225,13 @@ else if (path[1] === "image"){
             //TODO make the getImageCOunt method return a number not undefined
             let totalImages =  await getImageCount()
             console.log("TOTAL: "+ totalImages)
-            // let bodyObject = JSON.parse(body)
-            // let printablebodyObject = JSON.stringify(bodyObject)
-            // console.log(printablebodyObject);
-            // makeNewImage(resp,(totalImages+1),bodyObject['URL'],bodyObject['tags'])
-            // // -----> This breaks the server, idk why
-            // addImageToImageStorage(bodyObject) 
+            console.log(typeof totalImages)
+            let bodyObject = JSON.parse(body)
+            let printablebodyObject = JSON.stringify(bodyObject)
+            console.log(printablebodyObject);
+            makeNewImage(resp,totalImages+1,bodyObject['URL'],bodyObject['tags'])
+            // -----> This breaks the server, idk why
+            addImageToImageStorage(bodyObject) 
 
         });
     }else if (req.method == "GET"){
