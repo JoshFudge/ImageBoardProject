@@ -15,21 +15,6 @@ const getFile = (res, filePath, contentType) => {
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
-// const checkForMatch = (imgTags,TagsSearched) => {
-//     let flag = false;
-//     for(let i = 0; i < imgTags.length; i++){
-//         // console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
-
-//         // console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
-//         // console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
-//         if(imgTags.includes(TagsSearched[0]) && !imgTags.includes(TagsSearched[1])){
-
-//             // console.log("imgTags INCLUDES "+ TagsSearched[0])
-//             flag = true
-//         }
-//     }
-//     return flag
-// }
 
 const checkForMatch = (imgTags,TagsSearched) => {
     let flag = true;
@@ -121,22 +106,25 @@ const getComments = (res,imageID) => {
     });
 }
 
-const makeComment = (res, commentID, contents) => {
-    fs.writeFile("images/comments/"+commentID+".json",
-    `{
-        "comment-id": "${commentID}",
-        "content": "${contents}"
-    }`
+const makeComment = (res, imageID, comment) => {
+    fs.readFile("images/"+imageID+".json",
     ).then( content => {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.write("");
-            res.end();
-        }).catch( _ => {
-            res.writeHead(404, {'Content-Type': 'application/json'});
-            res.write('{"error": "No post for given ID"}');
-            res.end();
-        });
+            const commentList = JSON.parse(content)
+            commentList.comments.push(comment)
+            console.log(commentList.comments)
+            return fs.writeFile("images/"+imageID+".json", JSON.stringify(commentList))
+        })
 }
+
+// const addImageToImageStorage = async (img) => {
+//     fs.readFile(`allImages.json`)
+//     .then(content => {
+//         const imgList = JSON.parse(content);
+//         imgList.allImages.push(img);
+//         return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
+//     }
+//     )
+// }
 
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV COMMENT METHODS VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
@@ -248,26 +236,43 @@ else if(path[1] === "postImage.html"){
 }else if(path[1] === "postImage.js"){
     getFile(resp, "PostImagePage/"+ path[1], "text/javascript")
 }
+
 else if (path[1] === "image"){
-
+    
     if(req.method == "POST"){
-        let body ="";
-        req.on('data', (chunk) => {
-            body += chunk;
-        });
-        req.on('end',async () => {
-            //TODO make the getImageCOunt method return a number not undefined
-            let totalImages =  await getImageCount()
-            console.log("TOTAL: "+ totalImages)
-            console.log(typeof totalImages)
-            let bodyObject = JSON.parse(body)
-            let printablebodyObject = JSON.stringify(bodyObject)
-            console.log(printablebodyObject);
-            makeNewImage(resp,totalImages+1,bodyObject['URL'],bodyObject['tags'])
-            // -----> This breaks the server, idk why
-            addImageToImageStorage(bodyObject) 
+         if (path[1] === "image" && path[3] === "comment"){
+            if(req.method == "POST"){
+                let body ="";
+                req.on('data', (chunk) => {
+                    body += chunk;
+                });
+                req.on('end',async () => {
+                    let bodyObject = JSON.parse(body)
+                    let printablebodyObject = JSON.stringify(bodyObject)
+                    console.log("ye "+printablebodyObject);
+                    makeComment(resp,path[2],bodyObject["comment"])
+                })
+            }
+        }else{
+            let body ="";
+            req.on('data', (chunk) => {
+                body += chunk;
+            });
+            req.on('end',async () => {
+                //TODO make the getImageCOunt method return a number not undefined
+                let totalImages =  await getImageCount()
+                console.log("TOTAL: "+ totalImages)
+                console.log(typeof totalImages)
+                let bodyObject = JSON.parse(body)
+                let printablebodyObject = JSON.stringify(bodyObject)
+                console.log(printablebodyObject);
+                makeNewImage(resp,totalImages+1,bodyObject['URL'],bodyObject['tags'])
+                // -----> This breaks the server, idk why
+                addImageToImageStorage(bodyObject) 
+    
+            });
+        }
 
-        });
     }else if (req.method == "GET"){
 
         if(path[1]== "image" && path[3] === "comment"){
