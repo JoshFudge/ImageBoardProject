@@ -15,21 +15,46 @@ const getFile = (res, filePath, contentType) => {
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
+// const checkForMatch = (imgTags,TagsSearched) => {
+//     let flag = false;
+//     for(let i = 0; i < imgTags.length; i++){
+//         // console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
+
+//         // console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
+//         // console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
+//         if(imgTags.includes(TagsSearched[0]) && !imgTags.includes(TagsSearched[1])){
+
+//             // console.log("imgTags INCLUDES "+ TagsSearched[0])
+//             flag = true
+//         }
+//     }
+//     return flag
+// }
+
 const checkForMatch = (imgTags,TagsSearched) => {
-    let flag = false;
-    for(let i = 0; i < imgTags.length; i++){
-        // console.log("IMGTAGS: "+ imgTags + typeof(imgTags))
-
-        // console.log("INCLUDE: "+TagsSearched[0]+ typeof(TagsSearched[0]))
-        // console.log("Exclude: "+TagsSearched[1]+ typeof(TagsSearched[1]))
-        if(imgTags.includes(TagsSearched[0]) && !imgTags.includes(TagsSearched[1])){
-
-            // console.log("imgTags INCLUDES "+ TagsSearched[0])
-            flag = true
+    let flag = true;
+    for(let i=0; i< imgTags.length; i++){
+        if(TagsSearched[1].includes(imgTags[i])){
+            flag = false
+        }else{
+            let tagsToCheck = TagsSearched[0].split(",")
+            for(let x = 0; x < tagsToCheck.length; x++){
+                console.log("THIS: "+ tagsToCheck)
+                if(!imgTags.includes(tagsToCheck[x])){
+                    console.log("HERE")
+                    flag = false
+                }
+            }
         }
+
+
     }
+    
     return flag
 }
+
+
+
 
 const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
