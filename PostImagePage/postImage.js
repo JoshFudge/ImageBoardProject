@@ -39,6 +39,7 @@ $("#uploadImageButton").click( async () => {
         let imgURL = $("#picurl").val();
         let tagInput = $("#pictags").val();
         let imageTags = tagInput.split(" ");
+        // Get a value to put in instead of 77777
         postImage(77777,imgURL,imageTags)
         $("#pictags").val("");
         $("#picurl").val("");

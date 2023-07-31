@@ -172,7 +172,9 @@ const getImageCount = async() => {
         const imgTotal = JSON.parse(content)
         // console.log(imgTotal)
         console.log("here: "+imgTotal.allImages.length)
-        return imgTotal.allImages.length;
+        let total = imgTotal.allImages.length
+        
+        return total;
     })
 }
 ////////////////////////////////// IMAGE METHODS
