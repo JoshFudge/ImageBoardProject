@@ -65,31 +65,11 @@ const getImage = async (imageID) => {
 }
 
 // Method to get a comment
-const getComment = async (imgID) => {
+const getComments = async (imgID) => {
     return await fetch("http://localhost:8080/image/"+imgID+"/comment")
 }
 
-// Method to get all comments
-const getAllComments = async(allCommentIDs) => {
-    const commentsContainer = [];
-    for (let i = 0; i< allCommentIDs.length; i++) {
-        const commentID = allCommentIDs[i];
-        const commentPromise = await getComment(commentID);
-        const comment = await commentPromise.json();
-        commentsContainer.push(comment);
-    }
-    return commentsContainer;
 
-}
-
-// Method to update the image with all the comments including the newly posted one
-// const updateImageWithComment = async (commentID, imageID) => {
-//     const image = await fetch(`http://localhost:8080/addComment/${commentID}/toImage/${imageID}`);
-//     if(image.status > 299 || image.status < 200) {
-//         throw Error("Invalid Topic ID")
-//     }
-//     return image
-// }
 
 // Method to check if the search bar search is a valid entry
 const valiateSideBarSearch = (userInput) => {
@@ -131,8 +111,19 @@ const displayPage = async () => {
         $(`<li> ${imageTags[i]}</li>`).appendTo("#imageTagsList")
     }
 
-
-
+    let imgCommentPromise= await getComments(imageString["imageID"])
+    let imgCommentJSON = await imgCommentPromise.json()
+    let individualComments = imgCommentJSON["response"].split(",")
+    console.log(individualComments)
+    console.log(individualComments.length)
+    if(individualComments[0] != ""){
+        for(let i = 0; i < individualComments.length; i++){
+            $(`<div class="individualComment"> `+
+            `<h3>Anonymous Says:</h3>`+
+            `<p>${individualComments[i]}</p>` +
+        `</div>`).appendTo(".CommentDiv")
+        }
+    }
 
 }
 

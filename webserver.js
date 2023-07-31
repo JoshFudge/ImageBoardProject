@@ -84,9 +84,10 @@ const getComments = (res,imageID) => {
     fs.readFile("images/"+imageID+".json")
     .then(content => {
         const imgData = JSON.parse(content)
-        console.log(imgData)
+        let imgComments = imgData.comments
+       
         res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(content);
+        res.write('{"response":"'+imgComments+`"}`);
         res.end();
     }).catch( _ => {
         res.writeHead(404, {'Content-Type': 'application/json'});
@@ -232,11 +233,13 @@ else if (path[1] === "image"){
 
         });
     }else if (req.method == "GET"){
-        if(path[1]== "image"){
-            getImage(resp,path[2])
-        }
-        if(path[3] === "comment"){
+
+        if(path[1]== "image" && path[3] === "comment"){
+            console.log("HERE")
             getComments(resp,path[2])
+        }
+        else if(path[1]== "image"){
+            getImage(resp,path[2])
         }
     }
 
