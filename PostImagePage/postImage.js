@@ -5,7 +5,7 @@
 const postImage = async (imgID,imgURL,imgTags) => {
     let postingURL = "image/"+imgID;
     let contents = JSON.stringify({
-        imageID: imgID,
+        imageID: `"${imgID}"`,
         URL: imgURL,
         tags: imgTags,
         comments: []
