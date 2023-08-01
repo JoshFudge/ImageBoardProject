@@ -41,6 +41,7 @@ const checkForMatch = (imgTags,TagsSearched) => {
 
 
 
+
 const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
 .then(content => {
@@ -181,7 +182,13 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
 const addImageToImageStorage = async (img) => {
     fs.readFile(`allImages.json`)
     .then(content => {
+        console.log("hjddhsjds: "+ img.imageID)
+        img.imageID = img.imageID.replace('"',"")
+        let idToNum = parseInt(img.imageID);
+        img.imageID = idToNum.toString()
+        console.log("IMAGE: "+JSON.stringify(img))
         const imgList = JSON.parse(content);
+        
         imgList.allImages.push(img);
         return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
     }
@@ -204,7 +211,7 @@ const getImageCount = async() => {
 
 
 
-http.createServer(  (req, resp) => {
+http.createServer(  async(req, resp) => {
 const path = req.url.split('/');
 console.log(path);
 // Sync up the homepage files
@@ -237,8 +244,16 @@ else if(path[1] === "postImage.html"){
     getFile(resp, "PostImagePage/"+ path[1], "text/css")
 }else if(path[1] === "postImage.js"){
     getFile(resp, "PostImagePage/"+ path[1], "text/javascript")
-}
+    
+} else if(path[1] == "allImages"){
+    await getImageCount()
+    .then(response => {
 
+        resp.write('{"response":"'+response+`"}`);
+        resp.end();
+    })
+
+}
 else if (path[1] === "image"){
     
     if(req.method == "POST"){
@@ -265,12 +280,9 @@ else if (path[1] === "image"){
                 //TODO make the getImageCOunt method return a number not undefined
                 let totalImages =  await getImageCount()
                 console.log("TOTAL: "+ totalImages)
-                console.log(typeof totalImages)
                 let bodyObject = JSON.parse(body)
                 let printablebodyObject = JSON.stringify(bodyObject)
-                console.log(printablebodyObject);
                 makeNewImage(resp,totalImages+1,bodyObject['URL'],bodyObject['tags'])
-                // -----> This breaks the server, idk why
                 addImageToImageStorage(bodyObject) 
     
             });

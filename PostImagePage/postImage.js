@@ -1,6 +1,8 @@
 "use strict";
 
-
+const getImageTotal = async () => {
+    return await fetch("/allImages")
+}
 
 const postImage = async (imgID,imgURL,imgTags) => {
     let postingURL = "image/"+imgID;
@@ -36,11 +38,18 @@ $(document).ready(() => {
 $("#uploadImageButton").click( async () => {
 
     try{
+        let y = await getImageTotal()
+
+        let totalObjectJson = await y.json()
+        let string = JSON.stringify(totalObjectJson)
+        console.log(string)
+        let totalmgsString = parseInt(totalObjectJson["response"])
+        console.log(totalmgsString)
         let imgURL = $("#picurl").val();
         let tagInput = $("#pictags").val();
         let imageTags = tagInput.split(" ");
-        // Get a value to put in instead of 77777
-        postImage(77777,imgURL,imageTags)
+
+        postImage(totalmgsString+1,imgURL,imageTags)
         $("#pictags").val("");
         $("#picurl").val("");
     }catch (e){
