@@ -158,7 +158,7 @@ $(document).ready( async () => {
             // Do the tag Search
             $("#navbarSearchError").text("")
             getTags();
-            // window.location.href = "http://localhost:8080/pictureGrid.html";
+            window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
         }
@@ -168,10 +168,13 @@ $(document).ready( async () => {
     $(".grid-container").click((evt) => {
 
         let imgSelected = evt.target
+
         console.log(imgSelected)
-        storeImageID(imgSelected["id"])
-    
-        window.location.href = "http://localhost:8080/post.html";
+        if(imgSelected["id"]){
+            storeImageID(imgSelected["id"])
+            window.location.href = "http://localhost:8080/post.html";
+        }
+
         
     })
 

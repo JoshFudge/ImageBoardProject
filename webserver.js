@@ -116,15 +116,17 @@ const makeComment = (res, imageID, comment) => {
         })
 }
 
-// const addImageToImageStorage = async (img) => {
-//     fs.readFile(`allImages.json`)
-//     .then(content => {
-//         const imgList = JSON.parse(content);
-//         imgList.allImages.push(img);
-//         return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
-//     }
-//     )
-// }
+
+const addCommentToImageStorage = async (imgId,comment) => {
+    fs.readFile(`allImages.json`)
+    .then(content => {
+        const imgList = JSON.parse(content);
+        imgList.allImages[imgId].comments.push(comment);
+        console.log("these: "+imgList.allImages[imgId].comments)
+        return fs.writeFile(`allImages.json`, JSON.stringify(imgList))
+    }
+    )
+}
 
 //VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV COMMENT METHODS VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
@@ -251,6 +253,7 @@ else if (path[1] === "image"){
                     let printablebodyObject = JSON.stringify(bodyObject)
                     console.log("ye "+printablebodyObject);
                     makeComment(resp,path[2],bodyObject["comment"])
+                    addCommentToImageStorage(path[2]-1,bodyObject["comment"])
                 })
             }
         }else{
