@@ -21,7 +21,7 @@ const checkForMatch = (imgTags,TagsSearched) => {
     for(let i=0; i< imgTags.length; i++){
         if(TagsSearched[1].includes(imgTags[i])){
             flag = false
-        }else{
+        }else if (TagsSearched[0].length > 0){
             let tagsToCheck = TagsSearched[0].split(",")
             for(let x = 0; x < tagsToCheck.length; x++){
                 console.log("THIS: "+ tagsToCheck)
