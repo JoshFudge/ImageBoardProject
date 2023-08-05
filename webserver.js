@@ -217,7 +217,7 @@ console.log(path);
 // Sync up the homepage files
 if(path[1] === "" || path[1] === "homepage.html"){
     getFile(resp, "Homepage/" + path[1], "text/html");
-} else if(path[1] === "homepage.css"){
+} else if(path[1] === "styletwo.css"){
     getFile(resp, "homepage/"+ path[1], "text/css")
 }else if(path[1] === "homepage.js"){
     getFile(resp, "homepage/"+ path[1], "text/javascript")
