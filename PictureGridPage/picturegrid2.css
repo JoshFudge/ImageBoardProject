@@ -1,0 +1,84 @@
+.grid-container {
+    display: inline-grid;
+    grid-template-columns: 25rem 25rem 25rem 25rem;
+    float: right;
+    
+}
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("https://i.gifer.com/EvfB.gif");
+    background-size: 10%;
+}
+
+
+
+.grid-item img{
+    width: 60%;
+    margin: 1em;
+    box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    -webkit-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    -moz-box-shadow: 12px 0px 24px 1px rgba(230,226,226,0.6);
+    border: 0.5em black solid;
+}
+
+.gridHeader {
+    background: rgb(238,230,219);
+    background: linear-gradient(0deg, rgba(238,230,219,1) 3%, rgba(249,221,160,1) 93%, rgba(242,220,240,1) 100%);
+    text-align: center;
+    top: 0;
+    border: 0.4em black solid;
+    right: 100;
+}
+
+
+
+
+/* SideBar Stuff */
+.sidenav {
+    background:  url("https://i.pinimg.com/originals/19/7f/f8/197ff8b7301621fcc39555f3ce602167.gif");
+    height: 100%; 
+    width: 10%; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    background-color: #ffffff; 
+    padding-top: 20px;
+    border: 0.4em black solid;
+}
+
+.sidenav #searchbar{
+    padding: auto;
+    width: 85%;
+}
+
+.tags{
+    margin-top: 40%;
+    border: 1px black solid;
+    border-top: 0.5em black solid;
+    height: 100%;
+    color: antiquewhite;
+    font-size: 15px;
+}
+
+.tags h3 {
+    text-align: center;
+}
+
+.topSidebarSection {
+    text-align: center;
+}
+
+.topSidebarSection h3{
+    color: antiquewhite;
+}
+
+
+#NavbarSearchBar {
+    width: 85%;
+}
+
+/* SideBar Stuff */
+
+#uploadImageButton{
+    margin-top: 3em;
+}
