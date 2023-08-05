@@ -3,6 +3,7 @@ const fs = require('fs').promises;
 const http = require('http');
 
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^ ANCILLARY METHODS
+// method to get the files contents
 const getFile = (res, filePath, contentType) => {
     res.writeHead(200, {'Content-Type': contentType});
     fs.readFile(filePath)
@@ -16,6 +17,7 @@ const getFile = (res, filePath, contentType) => {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^ TAG METHODS
 
 
+// Helper method to check to see if an images tags fit the requested tags from the user
 const checkForMatch = (imgTags,TagsSearched) => {
     let flag = true;
     for(let i=0; i< imgTags.length; i++){
@@ -31,8 +33,6 @@ const checkForMatch = (imgTags,TagsSearched) => {
                 }
             }
         }
-
-
     }
     
     return flag
@@ -41,7 +41,7 @@ const checkForMatch = (imgTags,TagsSearched) => {
 
 
 
-
+// Method to search every image and see if the user input matched the images tags
 const getTagSearch = async (res,tags) => {
 fs.readFile("allImages.json")
 .then(content => {
@@ -73,15 +73,7 @@ fs.readFile("allImages.json")
     res.writeHead(200, {'Content-Type': 'application/json'});
     res.write('{"response":"'+responseString+`"}`);
     res.end();
-})
-
-
-
-
-
-
-
-}
+})}
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV TAG METHODS
 
@@ -89,7 +81,7 @@ fs.readFile("allImages.json")
 
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ COMMENT METHODS ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
+// method to return all the comments an image currently has
 const getComments = (res,imageID) => {
 //  Get the list of comments associated with this Image-ID
     fs.readFile("images/"+imageID+".json")
@@ -107,6 +99,7 @@ const getComments = (res,imageID) => {
     });
 }
 
+// method to add the new comment to the image json file
 const makeComment = (res, imageID, comment) => {
     fs.readFile("images/"+imageID+".json",
     ).then( content => {
@@ -117,7 +110,7 @@ const makeComment = (res, imageID, comment) => {
         })
 }
 
-
+//Method to add the new comment to the all images json file
 const addCommentToImageStorage = async (imgId,comment) => {
     fs.readFile(`allImages.json`)
     .then(content => {
@@ -135,6 +128,7 @@ const addCommentToImageStorage = async (imgId,comment) => {
 
 ////////////////////////////////// IMAGE METHODS
 
+// method to get an image based on its imageID
 const getImage = (res, imageID) => {
     // return an image’s JSON object from its JSON file, using the
 // unique Image-ID to find the image.
