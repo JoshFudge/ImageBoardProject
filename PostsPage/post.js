@@ -1,5 +1,6 @@
 "use strict";
 
+// method to get the user input tags if the sidebar searchbar is used
 const getTags = () => {
     //Put every search query in one list
     const tags = $("#NavbarSearchBar").val().split(" ");
@@ -27,7 +28,7 @@ const getTags = () => {
 }
 
 
-// Method to make a new comment object
+// Method to make a new comment and post it to the backend
 const makeComment = async (imgID,content) => {
     const bodyContents = JSON.stringify({
         "comment": content
@@ -46,16 +47,10 @@ const makeComment = async (imgID,content) => {
         if(response.status < 200 || response.status > 299){
             throw Error(e);
         }
-        // $(
-        //     `<h3> User: Josh<h3>`+
-        //     `<p>${content}<p>`
-        // )
-        // .appendTo('#CommentDiv');
-
     });
 }
 
-// Method to get an image
+// Method to fetch an image from the backend using its imageid
 const getImage = async (imageID) => {
     const image = await fetch("http://localhost:8080/image/"+imageID);
     if(image.status > 299 || image.status < 200) {
@@ -87,17 +82,21 @@ const validateComment = (UserComment) => {
 }
 
 
+// method to display all the image information
 const displayPage = async () => {
+    // ge the id from local storage
     let selected = localStorage.getItem("imageSelected")
     console.log(selected)
 
+    // get the image objec and display the url as a html image
     let imagePromise = await getImage(selected)
     let imageString = await imagePromise.json()
     console.log(imageString["URL"])
-    $(`<img id = photopost src = ${imageString["URL"]}>`).appendTo("#test")
+    $(`<img id = photopost src = ${imageString["URL"]}>`).appendTo("#imageDiv")
 
     let imageTags = []
 
+    // for each of the images tags push it to a list
     for(let i = 0; i< imageString["tags"].length; i++){
         let currentTags = imageString["tags"]
         for (const tag of currentTags) {
@@ -107,15 +106,17 @@ const displayPage = async () => {
 
         }
     }
+    // for each tag in the list, display it on the sidebar
     for(let i = 0; i< imageTags.length; i++){
         $(`<li> ${imageTags[i]}</li>`).appendTo("#imageTagsList")
     }
 
+    // get all the comments for the image object
     let imgCommentPromise= await getComments(imageString["imageID"])
     let imgCommentJSON = await imgCommentPromise.json()
     let individualComments = imgCommentJSON["response"].split(",")
-    console.log(individualComments)
-    console.log(individualComments.length)
+
+    // display each comment on the html 
     if(individualComments[0] != ""){
         for(let i = 0; i < individualComments.length; i++){
             $(`<div class="individualComment"> `+
@@ -129,14 +130,17 @@ const displayPage = async () => {
 
 
 $(document).ready( () => {
+    // display the image info
     displayPage()
 
+    // if the sidebar searchbar is used, do the proper validation and search
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()
         if(valiateSideBarSearch(tagSearch)){
             // Do the tag Search
             $("#navbarSearchError").text("")
             getTags();
+            // navigate to the picture grid page
             window.location.href = "http://localhost:8080/pictureGrid.html";
         } else{
             $("#navbarSearchError").text("Please Enter your Desired tags seperated by a ,")
@@ -144,24 +148,18 @@ $(document).ready( () => {
     })
 
 
-    //TODO get comments working
-
-    // getComment()
-
     $("#postComment").click( async () => {
         try{
             let comment = $("#commentArea").val();
-            console.log(comment)
     
             if(validateComment(comment)){
                 // Do the posting
                 let currentImageID = parseInt(localStorage.getItem("imageSelected"))
-                // const imageID = 1;// get the image id here
-                // // Make the new comment object
+                //  Make the new comment 
                 await makeComment(currentImageID,comment)
-                // // Update the current image with the new comment?
-                // await updateImageWithComment(newCommentId,imageID)
 
+
+                // refresh the page with the new comment
                 window.location.href = "http://localhost:8080/post.html";
 
 

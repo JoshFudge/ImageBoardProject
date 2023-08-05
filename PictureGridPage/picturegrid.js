@@ -21,20 +21,22 @@ const getTags = () => {
         unwantedTags[i] = unwantedTags[i].substring(1);
     }
     localStorage.setItem("wantedlist",wantedTags);
-    console.log(wantedTags);
+
     localStorage.setItem("unwantedlist",unwantedTags);
-    console.log(unwantedTags);
+
     window.location.href = "http://localhost:8080/pictureGrid.html";
 
 }
+
+// get the wanted and unwanted tags from local storage and make a list of all the tags
 const getWantedTags = () => {
     let gTags = localStorage.getItem("wantedlist");
     let bTags = localStorage.getItem("unwantedlist");
     let tagList = [gTags,bTags]
-    // console.log(tagList)
     return tagList
 }
 
+// api call to the backend to post the tags and do the tag search
 const postTags = async(tags) => {
     let postingURL = "/search";
     let contents = JSON.stringify({
@@ -76,6 +78,8 @@ const postTags = async(tags) => {
 
 ////////////////////////////////////// ANCILLARY METHODS
 
+
+// Method to validate that user entered a non blank value in the searchbar
 const valiateSideBarSearch = (userInput) => {
     let desiredtags = userInput.split(",")
     if(!userInput == "" && desiredtags.length != 0 ){
@@ -83,6 +87,7 @@ const valiateSideBarSearch = (userInput) => {
     }
 }
 
+// method to get all the search images and display them  on the page
 const getImagesAndDisplayPage = async () => {
     let tags = getWantedTags()
     let tagsPromise = await postTags(tags)
@@ -92,16 +97,18 @@ const getImagesAndDisplayPage = async () => {
     let imgIDlist = imageIdsReturned.split(",")
     console.log(imgIDlist)
 
+    // loop to get every image id searched and push the corresponding image object to a list
     let imglist = []
     for(let i=0; i < imgIDlist.length; i++){
         if(imgIDlist[i] != ""){
         let currentImg = await getImages(imgIDlist[i])
         let currentImgString = JSON.stringify(currentImg)
         imglist.push(currentImgString);
-        console.log("IMAGELIST: "+ imglist)
         }
     }
+    console.log("IMAGELIST: "+ imglist)
 
+    // loop to add html to display every image in the image object list
     for(let i = 0; i < imglist.length; i++){
         let currentImage = JSON.parse(imglist[i])
     
@@ -110,6 +117,7 @@ const getImagesAndDisplayPage = async () => {
         `</div>`).appendTo(".grid-container")
     }
 
+    // loop to get each searched immages tags and put them into a list
     let imageTags = []
     for(let i = 0; i< imglist.length; i++){
         let currentImage = JSON.parse(imglist[i])
@@ -119,6 +127,7 @@ const getImagesAndDisplayPage = async () => {
             imageTags.push(tag)
         }
     }
+    // for each tage in the list, append html of that tag and put it on the sidebar
     for(let i = 0; i< imageTags.length; i++){
         $(`<li> ${imageTags[i]}</li>`).appendTo("#imageTagsList")
     }
@@ -127,11 +136,12 @@ const getImagesAndDisplayPage = async () => {
 ////////////////////////////////////// ANCILLARY METHODS
 
 
+
+
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ IMAGE METHODS
 
 
-//TODO figure out how to get the image object onto the piture grid page
-
+// method to do a fetch request and get all the images
 const getImages = async (imageID) => {
     const image = await fetch("http://localhost:8080/image/"+imageID)
     if(image.status > 299 || image.status < 200) {
@@ -140,8 +150,8 @@ const getImages = async (imageID) => {
     return await image.json()
 }
 
+// Method to store an image id to local storage to be used in another page
 const storeImageID = (imageID) => {
-
     localStorage.setItem("imageSelected",imageID)
 }
 
@@ -149,9 +159,11 @@ const storeImageID = (imageID) => {
 
 
 $(document).ready( async () => {
+    // Display all the searched images
     getImagesAndDisplayPage()
 
 
+    // If the sidebar search is used, validate the input, get the tags sorted and refresh the page with the new search parameters
     $("#NavbarSearchButton").click(() => {
         let tagSearch = $("#NavbarSearchBar").val()
         if(valiateSideBarSearch(tagSearch)){
@@ -165,6 +177,7 @@ $(document).ready( async () => {
     })
     
 
+    // When a picture is clicked, go to the post page on that specific image clicked
     $(".grid-container").click((evt) => {
 
         let imgSelected = evt.target
@@ -178,6 +191,7 @@ $(document).ready( async () => {
         
     })
 
+    // on the button press, go to he post image page
     $("#uploadImageButton").click(() => {
         window.location.href = "http://localhost:8080/postImage.html";
     })
