@@ -233,7 +233,7 @@ else if(path[1] === "pictureGrid.html"){
 // Sync up the post files
 else if(path[1] === "post.html"){
     getFile(resp, "PostsPage/"+ path[1], "text/html")
-}else if(path[1] === "posts.css"){
+}else if(path[1] === "posts2.css"){
     getFile(resp, "PostsPage/"+ path[1], "text/css")
 }else if(path[1] === "post.js"){
     getFile(resp, "PostsPage/"+ path[1], "text/javascript")
