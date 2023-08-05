@@ -43,26 +43,29 @@ $(document).ready(() => {
 $("#uploadImageButton").click( async () => {
 
     // get the total number of existing images from the backend
-    try{
-        let imagetotalpromise = await getImageTotal()
-
-        let totalObjectJson = await imagetotalpromise.json()
-        let string = JSON.stringify(totalObjectJson)
-        console.log(string)
-        let totalmgsString = parseInt(totalObjectJson["response"])
-        console.log(totalmgsString)
-        // get the values from the user input
-        let imgURL = $("#picurl").val();
-        let tagInput = $("#pictags").val();
-        let imageTags = tagInput.split(" ");
-
-        // post the image on the backend with the user entered values
-        postImage(totalmgsString+1,imgURL,imageTags)
-        $("#pictags").val("");
-        $("#picurl").val("");
-    }catch (e){
-        console.log(e)
+    if($("#picurl").val() != "" && $("#pictags").val() != ""){
+        try{
+            let imagetotalpromise = await getImageTotal()
+    
+            let totalObjectJson = await imagetotalpromise.json()
+            let string = JSON.stringify(totalObjectJson)
+            console.log(string)
+            let totalmgsString = parseInt(totalObjectJson["response"])
+            console.log(totalmgsString)
+            // get the values from the user input
+            let imgURL = $("#picurl").val();
+            let tagInput = $("#pictags").val();
+            let imageTags = tagInput.split(" ");
+    
+            // post the image on the backend with the user entered values
+            postImage(totalmgsString+1,imgURL,imageTags)
+            $("#pictags").val("");
+            $("#picurl").val("");
+        }catch (e){
+            console.log(e)
+        }
     }
+
 })
 
 // when clicked, return to the homepage

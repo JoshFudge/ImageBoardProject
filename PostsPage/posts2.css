@@ -36,10 +36,17 @@ body{
 .topSidebarSection {
     text-align: center;
 }
+.topSidebarSection h3{
+    color: antiquewhite;
+}
 
 #NavbarSearchBar {
     width: 85%;
     
+}
+
+#navbarSearchError {
+    color: #ffffff;
 }
 /* SideBar Stuff */
 

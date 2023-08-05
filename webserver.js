@@ -150,7 +150,7 @@ fs.readFile("images/"+imageID+".json")
 });
 }
 
-// Method to make new imge JSON file
+// Method to make new image JSON file 
 const makeNewImage = (res, imageID,imageURL, imageTags) => {
     let tagString =  ""
     for(let i=0; i< imageTags.length; i++){
@@ -179,6 +179,7 @@ const makeNewImage = (res, imageID,imageURL, imageTags) => {
         });
 }
 
+// Method to add the image json object to the allimages json file
 const addImageToImageStorage = async (img) => {
     fs.readFile(`allImages.json`)
     .then(content => {
@@ -210,7 +211,7 @@ const getImageCount = async() => {
 ////////////////////////////////// IMAGE METHODS
 
 
-
+// Creating the webserver
 http.createServer(  async(req, resp) => {
 const path = req.url.split('/');
 console.log(path);
@@ -222,7 +223,7 @@ if(path[1] === "" || path[1] === "homepage.html"){
 }else if(path[1] === "homepage.js"){
     getFile(resp, "homepage/"+ path[1], "text/javascript")
 }
-// Sync up the picture grid files
+// Sync up the picture grid page files
 else if(path[1] === "pictureGrid.html"){
     getFile(resp, "PictureGridPage/"+ path[1], "text/html")
 }else if(path[1] === "picturegrid2.css"){
@@ -230,7 +231,7 @@ else if(path[1] === "pictureGrid.html"){
 }else if(path[1] === "picturegrid.js"){
     getFile(resp, "PictureGridPage/"+ path[1], "text/javascript")
 }
-// Sync up the post files
+// Sync up the post page files
 else if(path[1] === "post.html"){
     getFile(resp, "PostsPage/"+ path[1], "text/html")
 }else if(path[1] === "posts2.css"){
@@ -238,6 +239,7 @@ else if(path[1] === "post.html"){
 }else if(path[1] === "post.js"){
     getFile(resp, "PostsPage/"+ path[1], "text/javascript")
 }
+// Sync up the post image page files
 else if(path[1] === "postImage.html"){
     getFile(resp, "PostImagePage/"+ path[1], "text/html")
 }else if(path[1] === "postImage.css"){

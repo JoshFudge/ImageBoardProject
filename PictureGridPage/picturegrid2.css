@@ -77,6 +77,10 @@ body{
     width: 85%;
 }
 
+#navbarSearchError {
+    color: #ffffff;
+}
+
 /* SideBar Stuff */
 
 #uploadImageButton{
