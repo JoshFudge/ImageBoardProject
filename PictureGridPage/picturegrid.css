@@ -53,10 +53,11 @@ body{
 }
 
 .tags{
-    margin-top: 80%;
+    margin-top: 40%;
     border: 1px black solid;
     border-top: 0.5em black solid;
     height: 100%;
+    font-size: 15px;
 }
 
 .tags h3 {
