@@ -252,7 +252,9 @@ else if(path[1] === "postImage.html"){
 }
 else if (path[1] === "image"){
     
+
     if(req.method == "POST"){
+            // If an comment is being posted, add the comment to the image json and update the allimages json too
          if (path[1] === "image" && path[3] === "comment"){
             if(req.method == "POST"){
                 let body ="";
@@ -268,6 +270,7 @@ else if (path[1] === "image"){
                 })
             }
         }else{
+            // if an image is being posted, make a new image and add the image json to the allimages json
             let body ="";
             req.on('data', (chunk) => {
                 body += chunk;
@@ -286,16 +289,19 @@ else if (path[1] === "image"){
 
     }else if (req.method == "GET"){
 
+        // If theres a get comments request, return all the commenta for that image
         if(path[1]== "image" && path[3] === "comment"){
             console.log("HERE")
             getComments(resp,path[2])
         }
+        // if theres a get image request, return the image object
         else if(path[1]== "image"){
             getImage(resp,path[2])
         }
     }
 
 }else if (path[1] == "search"){
+    // if theres a search request, seperate the tags depending on if they are wanted or unwanted and do the tag search
     let body = "";
     req.on('data', (chunk) => {
         body += chunk;
@@ -313,7 +319,7 @@ else if (path[1] === "image"){
 }
 
 
-
+// if everying else fails, display an error message
 else {
     resp.writeHead(404, {'Content-Type': 'text/html'});
     resp.write(
