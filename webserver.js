@@ -225,7 +225,7 @@ if(path[1] === "" || path[1] === "homepage.html"){
 // Sync up the picture grid files
 else if(path[1] === "pictureGrid.html"){
     getFile(resp, "PictureGridPage/"+ path[1], "text/html")
-}else if(path[1] === "picturegrid.css"){
+}else if(path[1] === "picturegrid2.css"){
     getFile(resp, "PictureGridPage/"+ path[1], "text/css")
 }else if(path[1] === "picturegrid.js"){
     getFile(resp, "PictureGridPage/"+ path[1], "text/javascript")
